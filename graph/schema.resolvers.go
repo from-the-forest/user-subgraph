@@ -6,11 +6,13 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"user/graph/model"
 )
 
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
+	fmt.Println(ctx)
 	// panic(fmt.Errorf("not implemented: Whoami - whoami"))
 	return &model.User{
 		ID:        "1",
