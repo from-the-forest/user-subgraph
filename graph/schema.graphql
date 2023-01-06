@@ -1,0 +1,15 @@
+# TODO: make this an entity
+type User {
+  "Node ID"
+  id: ID!
+  "User's first name"
+  firstName: String!
+  "User's last name"
+  lastName: String!
+}
+
+# Root Queries
+
+type Query {
+  whoami: User!
+}
