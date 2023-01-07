@@ -1,15 +1,19 @@
-# TODO: make this an entity
+"""
+User type
+"""
 type User {
-  "Node ID"
-  id: ID!
   "User's first name"
   firstName: String!
+  "Node ID"
+  id: ID!
   "User's last name"
   lastName: String!
 }
 
-# Root Queries
-
+"""
+Root query
+"""
 type Query {
+  "The currently logged in user"
   whoami: User!
 }

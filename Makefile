@@ -1,10 +1,15 @@
+# install go and npm dependencies
+install:
+	go mod download
+	npm install
+
 # builds executable
 build: 
 	go build -o ./bin/user-subgraph
 
 # lint the schema / go files
 lint:
-	echo "not implemented"; exit 1;
+	npx graphql-schema-linter --except relay-page-info-spec
 
 # run unit tests
 test:

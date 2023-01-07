@@ -48,6 +48,16 @@ jobs:
       # - store_test_results:
       #     path: coverage
 
+  lint:
+    executor:
+      name: go/default
+      tag: 1.19.4
+    steps:
+      - checkout
+      - node/install
+      - node/install-packages
+      - run: make lint
+
   build:
     executor:
       name: go/default
@@ -70,6 +80,10 @@ workflows:
     jobs:
       - install
       - secrets
+      - test:
+          requires:
+            - install
+            - secrets
       - test:
           requires:
             - install

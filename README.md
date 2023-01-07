@@ -33,7 +33,7 @@
 - [x] CI
   - [x] Install
   - [x] Secrets
-  - [ ] Building
+  - [x] Build
   - [ ] Schema Linting
   - [ ] Unit Testing
   - [ ] Integration Testing
