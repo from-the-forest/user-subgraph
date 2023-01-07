@@ -14,7 +14,9 @@
 ## Tasks
 
 - [x] use `gin` as a server rather than `net/http` to allow for middleware (custom context)
-- [x] Hot Reloading
+- [ ] DevEx
+  - [x] Hot Reloading
+  - [ ] Debugging
 - [x] Secrets
   - [x] `.env` support
 - [ ] Context
@@ -34,7 +36,7 @@
   - [x] Install
   - [x] Secrets
   - [x] Build
-  - [ ] Schema Linting
+  - [x] Schema Linting
   - [ ] Unit Testing
   - [ ] Integration Testing
 - [ ] Deployment
