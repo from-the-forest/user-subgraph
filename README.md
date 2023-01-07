@@ -1,11 +1,40 @@
 # User Subgraph
 
+## Requirements
+
+- `go`
+- `npm` & `node` (only needed for (hot reloading) during local development)
+
 ## Getting Started
 
-`go mod install`
+1. `go mod install`
+2. `make dev`
+3. `open http://localhost:8000`
 
 ## Tasks
 
 - [x] use `gin` as a server rather than `net/http` to allow for middleware (custom context)
+- [x] Hot Reloading
+- [x] `.env` support
 - [ ] Context
-- [ ] Hot Reloading
+  - [ ] Parse Request Context
+- [ ] Secrets
+- [ ] Unit Testing
+- [ ] Schema
+  - [ ] Scalars
+- [ ] Relay
+  - [ ] Pagination Utils
+  - [ ] Node / Nodes query
+- [ ] Federation
+  - [ ] Entities
+  - [ ] Field Resolvers
+- [ ] Directives
+  - [ ] @depricated
+- [ ] CI
+  - [ ] Building
+  - [ ] Schema Linting
+  - [ ] Unit Testing
+  - [ ] Integration Testing
+- [ ] Deployment
+  - [ ] Dockerize
+  - [ ] deploy to https://api.cuffney.com/v1/graphql/user
