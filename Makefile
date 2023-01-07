@@ -1,6 +1,6 @@
 # builds executable
 build: 
-	go build
+	go build -o ./bin/user-subgraph
 
 # lint the schema / go files
 lint:

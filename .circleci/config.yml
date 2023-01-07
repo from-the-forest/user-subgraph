@@ -45,6 +45,8 @@ jobs:
           covermode: atomic
           failfast: true
           race: true
+      # - store_test_results:
+      #     path: coverage
 
   build:
     executor:
@@ -52,10 +54,15 @@ jobs:
       tag: 1.19.4
     steps:
       - checkout
+      # get .env from secrets job.
+      - attach_workspace:
+          at: /home/circleci/project
       - go/load-cache
       - go/mod-download
       - go/save-cache
       - run: make build
+      - store_artifacts:
+          path: ./bin/user-subgraph
 
 workflows:
   version: 2
