@@ -37,8 +37,11 @@
   - [x] Secrets
   - [x] Build
   - [x] Schema Linting
-  - [ ] Unit Testing
+  - [x] Unit Testing
   - [ ] Integration Testing
 - [ ] Deployment
   - [ ] Dockerize
-  - [ ] deploy to https://api.cuffney.com/v1/graphql/user
+  - [ ] deploy as
+    - [ ] serverless
+    - [ ] standalone
+    - [ ] kubernetes
