@@ -8,7 +8,9 @@ orbs:
 
 jobs:
   install:
-    executor: go/default
+    executor:
+      name: go/default
+      tag: cimg/go:1.19.4
     steps:
       - checkout
       - go/load-cache
@@ -16,7 +18,9 @@ jobs:
       - go/save-cache
 
   secrets:
-    executor: go/default
+    executor:
+      name: go/default
+      tag: cimg/go:1.19.4
     steps:
       - checkout
       - run: |
@@ -29,7 +33,9 @@ jobs:
           path: .env
 
   test:
-    executor: go/default
+    executor:
+      name: go/default
+      tag: cimg/go:1.19.4
     steps:
       - checkout
       - go/load-cache
