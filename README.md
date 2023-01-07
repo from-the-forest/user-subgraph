@@ -15,10 +15,10 @@
 
 - [x] use `gin` as a server rather than `net/http` to allow for middleware (custom context)
 - [x] Hot Reloading
-- [x] `.env` support
+- [x] Secrets
+  - [x] `.env` support
 - [ ] Context
   - [ ] Parse Request Context
-- [ ] Secrets
 - [ ] Unit Testing
 - [ ] Schema
   - [ ] Scalars
@@ -30,7 +30,9 @@
   - [ ] Field Resolvers
 - [ ] Directives
   - [ ] @depricated
-- [ ] CI
+- [x] CI
+  - [x] Install
+  - [x] Secrets
   - [ ] Building
   - [ ] Schema Linting
   - [ ] Unit Testing
