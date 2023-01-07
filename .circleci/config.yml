@@ -10,7 +10,7 @@ jobs:
   install:
     executor:
       name: go/default
-      tag: cimg/go:1.19.4
+      tag: 1.19.4
     steps:
       - checkout
       - go/load-cache
@@ -20,7 +20,7 @@ jobs:
   secrets:
     executor:
       name: go/default
-      tag: cimg/go:1.19.4
+      tag: 1.19.4
     steps:
       - checkout
       - run: |
@@ -35,7 +35,7 @@ jobs:
   test:
     executor:
       name: go/default
-      tag: cimg/go:1.19.4
+      tag: 1.19.4
     steps:
       - checkout
       - go/load-cache
