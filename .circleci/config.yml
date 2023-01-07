@@ -1,0 +1,34 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.3
+  go: circleci/go@1.7.1
+  aws-cli: circleci/aws-cli@3.1.4
+  jq: circleci/jq@2.2.0
+
+jobs:
+  install:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages
+
+  secrets:
+    executor: node/default
+    steps:
+      - checkout
+      - run: |
+          echo "PORT=4000" >> .env
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - .env
+      - store_artifacts:
+          path: .env
+
+workflows:
+  version: 2
+  primary:
+    jobs:
+      - install
+      - secrets
