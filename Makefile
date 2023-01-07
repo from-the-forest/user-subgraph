@@ -13,7 +13,7 @@ lint:
 
 # run unit tests
 test:
-	echo "not implemented"; exit 1;
+	go test user/graph
 
 # run integration tests
 integration:

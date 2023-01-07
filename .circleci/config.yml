@@ -45,8 +45,6 @@ jobs:
           covermode: atomic
           failfast: true
           race: true
-      # - store_test_results:
-      #     path: coverage
 
   lint:
     executor:
