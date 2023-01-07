@@ -19,8 +19,11 @@
   - [ ] Debugging
 - [x] Secrets
   - [x] `.env` support
-- [ ] Context
-  - [ ] Parse Request Context
+- [x] Context
+  - [x] env in context
+  - [x] user comes from context
+  - [ ] data loader(s) in context
+  - [ ] Parse request context to get user
 - [ ] Unit Testing
 - [ ] Schema
   - [ ] Scalars
