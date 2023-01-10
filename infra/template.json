@@ -9,13 +9,6 @@
                 "Value": "tmp",
                 "Description": "this is just so there is at least 1 resource.  otherwise cloudformation fails.",
             }
-        },
-        "Cluster": {
-            "Type": "AWS::EKS::Cluster",
-            "Properties": {
-                "Name": "graphql-main",
-                "Version": "1.20"
-            }
         }
     },
     "Outputs": {}
