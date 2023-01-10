@@ -46,8 +46,9 @@
     - [x] Build
     - [x] Schema Linting
     - [x] Unit Testing
-    - [ ] Infra
-    - [ ] Deployment
+    - [x] Infra
+    - [x] Deployment
+    - [ ] Publish schema to registry
     - [ ] Integration Testing
   - [ ] Nightly Workflow
     - [x] tear down stack (to avoid extra costs)
@@ -55,6 +56,7 @@
 - [ ] Deployment
   - [x] Dockerize
   - [ ] deploy in a compute agnostic way
+    - [ ] kubernetes
     - [ ] serverless
     - [ ] standalone
-    - [ ] kubernetes
+
