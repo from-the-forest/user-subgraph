@@ -2,7 +2,6 @@
 
 package model
 
-// Node interface
 type Node interface {
 	IsNode()
 	// Relay node id

@@ -214,10 +214,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema/relay.graphql", Input: `"""
-Node interface
-"""
-interface Node {
+	{Name: "../schema/relay.graphql", Input: `interface Node {
   "Relay node id"
   id: ID!
 }

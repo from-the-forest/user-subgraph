@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	c "user/graph/context"
 	graph "user/graph/generated"
 	"user/graph/model"
@@ -15,7 +14,6 @@ import (
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 	user := ctx.Value(c.UserCtxKey).(*model.User)
-	fmt.Println(ctx.Value(c.EnvCtxkey).(string))
 	return user, nil
 }
 

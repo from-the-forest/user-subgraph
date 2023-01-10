@@ -6,15 +6,14 @@ package graph
 
 import (
 	"context"
-	c "user/graph/context"
 	graph "user/graph/generated"
+	"user/graph/lib"
 	"user/graph/model"
 )
 
 // FindUserByID is the resolver for the findUserByID field.
 func (r *entityResolver) FindUserByID(ctx context.Context, id string) (*model.User, error) {
-	user := ctx.Value(c.UserCtxKey).(*model.User)
-	return user, nil
+	return lib.FindUserByID(id)
 }
 
 // Entity returns graph.EntityResolver implementation.

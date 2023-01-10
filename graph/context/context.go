@@ -2,9 +2,10 @@ package context
 
 import (
 	"context"
-	"fmt"
+	"log"
+	"user/graph/lib"
+
 	"os"
-	"user/graph/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,17 +20,22 @@ var EnvCtxkey = &ContextKey{"env"}
 func ContextMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authorizationHeader := c.GetHeader("Authorization")
-		fmt.Println(authorizationHeader)
+		log.Printf("Authorization Header: %s", authorizationHeader)
 		// TODO: parse jwt token to get user id to look up user record
+		userId := "1"
+		user, err := lib.FindUserByID(userId)
+		if err != nil {
+			log.Fatal("Failed to find user by id")
+		}
 
 		// user context value
 		// TODO: get user out of request context
-		user := &model.User{
-			ID:        "1",
-			FirstName: "Joe",
-			LastName:  "Cuffney",
-			Email:     "josephcuffney@gmail.com",
-		}
+		// user := &model.User{
+		// 	ID:        "1",
+		// 	FirstName: "Joe",
+		// 	LastName:  "Cuffney",
+		// 	Email:     "josephcuffney@gmail.com",
+		// }
 
 		// set context values
 		ctx := context.WithValue(c.Request.Context(), UserCtxKey, user)

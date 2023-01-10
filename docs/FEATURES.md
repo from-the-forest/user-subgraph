@@ -20,8 +20,8 @@
 - [ ] Relay
   - [ ] Pagination Utils
   - [ ] Node / Nodes query
-- [ ] Federation
-  - [ ] Entities
+- [x] Federation
+  - [x] Entities
   - [ ] Field Resolvers
 - [ ] Directives
   - [ ] @depricated

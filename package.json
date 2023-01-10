@@ -1,15 +1,5 @@
 {
   "devDependencies": {
-    "graphql": "^16.6.0",
-    "graphql-schema-linter": "^3.0.1",
     "nodemon": "^2.0.20"
-  },
-  "graphql-schema-linter": {
-    "rules": [],
-    "schemaPaths": [
-      "graph/**/*.graphql"
-    ],
-    "customRules": [],
-    "rulesOptions": {}
   }
 }
