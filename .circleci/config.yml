@@ -92,7 +92,6 @@ jobs:
               --template-file ./infra/template.json \
               --no-fail-on-empty-changeset \
               --region us-east-1
-            aws s3 sync ./src s3://com.getonsetapp.cfn-templates --delete
 
   deploy:
     executor: aws-ecr/default
@@ -164,4 +163,4 @@ workflows:
                 - master
                 - dev
     jobs:
-      - install
+      - cleanup
