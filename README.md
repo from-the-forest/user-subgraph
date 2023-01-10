@@ -2,6 +2,8 @@
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/jcuffney/user-subgraph/tree/main.svg?style=svg&circle-token=bbbd0224a449733c353d1454e72ee1982c01d7a2)](https://dl.circleci.com/status-badge/redirect/gh/jcuffney/user-subgraph/tree/main)
 
+[![Asana](https://img.shields.io/badge/asana-%23273347.svg?&style=for-the-badge&logo=asana&logoColor=white)](https://img.shields.io/badge/asana-%23273347.svg?&style=for-the-badge&logo=asana&logoColor=white)
+
 ## Requirements
 
 - `go`
