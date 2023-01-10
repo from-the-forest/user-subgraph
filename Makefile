@@ -32,3 +32,9 @@ dev:
 # run codegen
 generate:
 	go run github.com/99designs/gqlgen generate
+
+docker-build:
+	docker build -t jcuffney/user-subgraph:latest .
+
+docker-run:
+	docker run -it --rm --name user-subgraph jcuffney/user-subgraph:latest
