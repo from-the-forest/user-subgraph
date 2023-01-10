@@ -43,6 +43,7 @@
   - [x] Build
   - [x] Schema Linting
   - [x] Unit Testing
+  - [ ] Infra
   - [ ] Deployment
   - [ ] Integration Testing
 - [ ] Deployment

@@ -73,7 +73,30 @@ jobs:
       - store_artifacts:
           path: ./bin/user-subgraph
 
-  image:
+  infra:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      # get .env from secrets job.
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          name: Validate CloudFormation
+          command: |
+            aws cloudformation validate-template \
+              --template-body file://infra/template.json \
+              --region us-east-1
+      - run:
+          name: Deploy Infrastructure via CloudFormation
+          command: |
+            aws cloudformation deploy \
+              --stack-name user-subgraph \
+              --template-file ./infra/template.json \
+              --no-fail-on-empty-changeset \
+              --region us-east-1
+            aws s3 sync ./src s3://com.getonsetapp.cfn-templates --delete
+
+  deploy:
     executor: aws-ecr/default
     steps:
       - checkout
@@ -103,12 +126,20 @@ workflows:
           requires:
             - install
             - secrets
-      - image:
+      - infra:
           context: cuffney
           requires:
             - build
             - test
             - lint
+          filters:
+            branches:
+              only:
+                - main
+      - deploy:
+          context: cuffney
+          requires:
+            - infra
           filters:
             branches:
               only:
