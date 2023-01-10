@@ -81,9 +81,9 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project
       # TODO: create repo - see if it will just create if not exists
-      - aws-ecr/create-repo:
-          repo: jcuffney/user-subgraph
-          region: us-east-1
+      # - aws-ecr/create-repo:
+      #     repo: jcuffney/user-subgraph
+      #     region: us-east-1
       - aws-ecr/build-image:
           repo: jcuffney/user-subgraph
           tag: latest
@@ -115,3 +115,7 @@ workflows:
             - build
             - test
             - lint
+          filters:
+            branches:
+              only:
+                - main
