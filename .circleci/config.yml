@@ -79,9 +79,7 @@ jobs:
       - checkout
       - run:
           name: Create Kubernetes Infrastructure
-          command: |
-            which doctl
-            doctl auth list
+          command: doctl account get
 
   # infra:
   #   executor: aws-cli/default
