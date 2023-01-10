@@ -88,7 +88,7 @@ jobs:
           name: Deploy Infrastructure via CloudFormation
           command: |
             aws cloudformation deploy \
-              --stack-name user-subgraph \
+              --stack-name ftf-user-subgraph \
               --template-file ./infra/template.json \
               --no-fail-on-empty-changeset \
               --region us-east-1
@@ -101,7 +101,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project
       - aws-ecr/build-and-push-image:
-          repo: jcuffney/user-subgraph
+          repo: ftf/user-subgraph
           tag: latest
           create-repo: true
 
