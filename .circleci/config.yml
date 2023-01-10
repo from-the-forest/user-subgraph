@@ -5,6 +5,7 @@ orbs:
   go: circleci/go@1.7.1
   aws-cli: circleci/aws-cli@3.1.4
   jq: circleci/jq@2.2.0
+  aws-ecr: circleci/aws-ecr@8.2.1
 
 jobs:
   install:
@@ -72,6 +73,15 @@ jobs:
       - store_artifacts:
           path: ./bin/user-subgraph
 
+  image:
+    executor: aws-ecr/default
+    steps:
+      - checkout
+      # get .env from secrets job.
+      - attach_workspace:
+          at: /home/circleci/project
+      - aws-ecr/build-image:
+
 workflows:
   version: 2
   primary:
@@ -90,3 +100,8 @@ workflows:
           requires:
             - install
             - secrets
+      - image:
+          requires:
+            - build
+            - test
+            - lint

@@ -26,7 +26,7 @@
   - [x] user comes from context
   - [ ] data loader(s) in context
   - [ ] Parse request context to get user
-- [ ] Unit Testing
+- [x] Unit Testing
 - [ ] Schema
   - [ ] Scalars
 - [ ] Relay
@@ -43,9 +43,10 @@
   - [x] Build
   - [x] Schema Linting
   - [x] Unit Testing
+  - [ ] Deployment
   - [ ] Integration Testing
 - [ ] Deployment
-  - [ ] Dockerize
+  - [x] Dockerize
   - [ ] deploy as
     - [ ] serverless
     - [ ] standalone
