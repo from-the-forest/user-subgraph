@@ -4,6 +4,7 @@
 - [ ] Development Experience
   - [x] Hot Reloading
   - [ ] Debugging
+  - [ ] Code Ownership
 - [x] Secrets
   - [x] `.env` support
 - [x] Context

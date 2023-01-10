@@ -2,6 +2,13 @@
 
 package model
 
+// Node interface
+type Node interface {
+	IsNode()
+	// Relay node id
+	GetID() string
+}
+
 // User type
 type User struct {
 	// User's first name
@@ -10,4 +17,13 @@ type User struct {
 	ID string `json:"id"`
 	// User's last name
 	LastName string `json:"lastName"`
+	// User's email address
+	Email string `json:"email"`
 }
+
+func (User) IsNode() {}
+
+// Relay node id
+func (this User) GetID() string { return this.ID }
+
+func (User) IsEntity() {}

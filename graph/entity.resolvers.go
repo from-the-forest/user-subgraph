@@ -6,20 +6,18 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	c "user/graph/context"
 	graph "user/graph/generated"
 	"user/graph/model"
 )
 
-// Whoami is the resolver for the whoami field.
-func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
+// FindUserByID is the resolver for the findUserByID field.
+func (r *entityResolver) FindUserByID(ctx context.Context, id string) (*model.User, error) {
 	user := ctx.Value(c.UserCtxKey).(*model.User)
-	fmt.Println(ctx.Value(c.EnvCtxkey).(string))
 	return user, nil
 }
 
-// Query returns graph.QueryResolver implementation.
-func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
+// Entity returns graph.EntityResolver implementation.
+func (r *Resolver) Entity() graph.EntityResolver { return &entityResolver{r} }
 
-type queryResolver struct{ *Resolver }
+type entityResolver struct{ *Resolver }

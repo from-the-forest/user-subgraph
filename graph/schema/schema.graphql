@@ -1,13 +1,21 @@
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.0"
+    import: ["@key", "@shareable"]
+  )
+
 """
 User type
 """
-type User {
+type User implements Node @key(fields: "id") {
   "User's first name"
   firstName: String!
   "Node ID"
   id: ID!
   "User's last name"
   lastName: String!
+  "User's email address"
+  email: Email!
 }
 
 """

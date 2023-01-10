@@ -5,6 +5,7 @@ import (
 	"os"
 	"user/graph"
 	c "user/graph/context"
+	generated "user/graph/generated"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -14,10 +15,10 @@ import (
 
 // Defining the Graphql handler
 func graphqlHandler() gin.HandlerFunc {
-	config := graph.Config{
+	config := generated.Config{
 		Resolvers: &graph.Resolver{},
 	}
-	h := handler.NewDefaultServer(graph.NewExecutableSchema(config))
+	h := handler.NewDefaultServer(generated.NewExecutableSchema(config))
 
 	return func(c *gin.Context) {
 		h.ServeHTTP(c.Writer, c.Request)

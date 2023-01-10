@@ -1,0 +1,9 @@
+"""
+Node interface
+"""
+interface Node {
+  "Relay node id"
+  id: ID!
+}
+
+# TODO: type PageInfo

@@ -1,6 +1,15 @@
-.DEFAULT_GOAL: setup
+# run gql codegen
+generate:
+	go run github.com/99designs/gqlgen generate
 
+# sets up project
 setup: install generate
+
+# starts server with hot reloading
+dev:
+	npx nodemon \
+		--exec go run ./server.go \
+		--signal SIGTERM
 
 # install go and npm dependencies
 install:
@@ -32,12 +41,5 @@ integration:
 start:
 	go run ./server.go
 
-# starts server with hot reloading
-dev:
-	npx nodemon \
-		--exec go run ./server.go \
-		--signal SIGTERM
 
-# run gql codegen
-generate:
-	go run github.com/99designs/gqlgen generate
+
