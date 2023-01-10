@@ -13,7 +13,7 @@ lint:
 
 # run unit tests
 test:
-	go test user/graph
+	go test ./...
 
 # run integration tests
 integration:

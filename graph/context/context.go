@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type contextKey struct {
+type ContextKey struct {
 	name string
 }
 
-var UserCtxKey = &contextKey{"user"}
-var EnvCtxkey = &contextKey{"env"}
+var UserCtxKey = &ContextKey{"user"}
+var EnvCtxkey = &ContextKey{"env"}
 
 func ContextMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
