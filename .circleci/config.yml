@@ -81,6 +81,11 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project
       - aws-ecr/build-image:
+          repo: jcuffney/user-subgraph
+          tag: latest
+          region: us-east-1
+          push-image: false
+      # TODO: store image artifact
 
 workflows:
   version: 2
