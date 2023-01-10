@@ -80,17 +80,10 @@ jobs:
       # get .env from secrets job.
       - attach_workspace:
           at: /home/circleci/project
-      # TODO: create repo - see if it will just create if not exists
-      # - aws-ecr/create-repo:
-      #     repo: jcuffney/user-subgraph
-      #     region: us-east-1
-      - aws-ecr/build-image:
+      - aws-ecr/build-and-push-image:
           repo: jcuffney/user-subgraph
           tag: latest
-          registry-id: 255964265911 # I think the "ECR REGISTRY ID" is just the account id?
-          region: us-east-1
-          push-image: false
-      # TODO: store image artifact
+          create-repo: true
 
 workflows:
   version: 2
