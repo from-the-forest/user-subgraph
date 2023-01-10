@@ -1,3 +1,7 @@
+.DEFAULT_GOAL: setup
+
+setup: install generate
+
 # install go and npm dependencies
 install:
 	go mod download
@@ -13,11 +17,16 @@ lint:
 
 # run unit tests
 test:
+	# TODO: arg for watch mode
 	go test ./...
+
+# run unit tests and capture coverage
+cover:
+	echo "not implemented"; exit 1;
 
 # run integration tests
 integration:
-	echo "not implemented"; exit 1;
+	ENV=staging echo "not implemented"; exit 1;
 
 # starts server without hot reloading
 start:
@@ -29,12 +38,6 @@ dev:
 		--exec go run ./server.go \
 		--signal SIGTERM
 
-# run codegen
+# run gql codegen
 generate:
 	go run github.com/99designs/gqlgen generate
-
-docker-build:
-	docker build -t ftf/user-subgraph:latest .
-
-docker-run:
-	docker run -it --rm --name user-subgraph ftf/user-subgraph:latest

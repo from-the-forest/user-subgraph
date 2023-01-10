@@ -2,11 +2,12 @@
 
 package model
 
+// User type
 type User struct {
-	// Node ID
-	ID string `json:"id"`
 	// User's first name
 	FirstName string `json:"firstName"`
+	// Node ID
+	ID string `json:"id"`
 	// User's last name
 	LastName string `json:"lastName"`
 }

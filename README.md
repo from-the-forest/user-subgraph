@@ -1,8 +1,7 @@
 # User Subgraph
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/jcuffney/user-subgraph/tree/main.svg?style=svg&circle-token=bbbd0224a449733c353d1454e72ee1982c01d7a2)](https://dl.circleci.com/status-badge/redirect/gh/jcuffney/user-subgraph/tree/main)
-
-[![Asana](https://img.shields.io/badge/asana-%23273347.svg?&style=for-the-badge&logo=asana&logoColor=white)](https://img.shields.io/badge/asana-%23273347.svg?&style=for-the-badge&logo=asana&logoColor=white)
+[![Asana](https://img.shields.io/badge/asana-%23273347.svg?&style=for-the-badge&logo=asana&logoColor=white)](https://app.asana.com/0/1203689378138415)
 
 ## Requirements
 
@@ -11,54 +10,22 @@
 
 ## Getting Started
 
-1. `go mod install`
+1. `make setup`
 2. `make dev`
 3. `open http://localhost:8000`
 
-## Tasks
+## Commands
 
-- [x] use `gin` as a server rather than `net/http` to allow for middleware (custom context)
-- [ ] DevEx
-  - [x] Hot Reloading
-  - [ ] Debugging
-- [x] Secrets
-  - [x] `.env` support
-- [x] Context
-  - [x] env in context
-  - [x] user comes from context
-  - [ ] data loader(s) in context
-  - [ ] Parse request context to get user
-- [ ] Unit Testing
-  - [x] 1st test written
-  - [ ] Coverage Report
-- [ ] Schema
-  - [ ] Scalars
-- [ ] Relay
-  - [ ] Pagination Utils
-  - [ ] Node / Nodes query
-- [ ] Federation
-  - [ ] Entities
-  - [ ] Field Resolvers
-- [ ] Directives
-  - [ ] @depricated
-- [x] CI
-  - [ ] Primary Workflow
-    - [x] Install
-    - [x] Secrets
-    - [x] Build
-    - [x] Schema Linting
-    - [x] Unit Testing
-    - [x] Infra
-    - [x] Deployment
-    - [ ] Publish schema to registry
-    - [ ] Integration Testing
-  - [ ] Nightly Workflow
-    - [x] tear down stack (to avoid extra costs)
-    - [ ] check for packages that are out of date
-- [ ] Deployment
-  - [x] Dockerize
-  - [ ] deploy in a compute agnostic way
-    - [ ] kubernetes
-    - [ ] serverless
-    - [ ] standalone
+`$ npm run <command>`
 
+| command                     | description   |
+|-----------------------------|---------------|
+| `make install`              | install go and npm dependencies |
+| `make build`                | build a binary of the application |
+| `make lint`                 | lints the schema |
+| `make test`                 | runs unit tests once |
+| `make integration`          | runs integration tests against specified env |
+| `make cover`                | gather test coverage |
+| `make start`                | starts the subgraph's production server |
+| `make dev`                  | starts the subgraph's dev server |
+| `make generate`             | runs gqlgen code generation |
