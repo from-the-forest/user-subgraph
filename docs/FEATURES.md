@@ -1,0 +1,53 @@
+## FEATURES 
+
+- [x] use `gin` as a server rather than `net/http` to allow for middleware (custom context)
+- [ ] Development Experience
+  - [x] Hot Reloading
+  - [ ] Debugging
+- [x] Secrets
+  - [x] `.env` support
+- [x] Context
+  - [x] env in context
+  - [x] user comes from context
+  - [ ] data loader(s) in context / database (dockerized and non dockerized)
+  - [ ] Parse request context to get user
+- [ ] Unit Testing
+  - [x] 1st test written
+  - [ ] Coverage Report
+- [ ] Schema
+  - [ ] Scalars
+- [ ] Relay
+  - [ ] Pagination Utils
+  - [ ] Node / Nodes query
+- [ ] Federation
+  - [ ] Entities
+  - [ ] Field Resolvers
+- [ ] Directives
+  - [ ] @depricated
+- [x] CI
+  - [ ] Primary Workflow
+    - [x] Install
+    - [x] Secrets
+    - [x] Build
+    - [x] Schema Linting
+    - [x] Unit Testing
+    - [x] Infra
+    - [x] Deployment
+    - [ ] Publish schema to registry
+    - [ ] Integration Testing
+  - [ ] Nightly Workflow
+    - [x] tear down stack (to avoid extra costs)
+    - [ ] check for packages that are out of date
+- [ ] Deployment
+  - [x] Dockerize
+  - [ ] deploy in a compute agnostic way
+    - [ ] kubernetes
+    - [ ] serverless
+    - [ ] standalone
+- [ ] Reliabilty
+  - [ ] Error monitoring via Sentry
+  - [ ] periodic Load testing (via CI nightly job)
+  - [ ] Cloudwatch console
+- [ ] Visibility
+  - [ ] Slack notifications for builds
+  - [ ] Slack notifications for alerts
