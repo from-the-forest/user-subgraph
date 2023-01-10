@@ -87,6 +87,7 @@ jobs:
       - aws-ecr/build-image:
           repo: jcuffney/user-subgraph
           tag: latest
+          registry-id: 255964265911 # I think the "ECR REGISTRY ID" is just the account id?
           region: us-east-1
           push-image: false
       # TODO: store image artifact
