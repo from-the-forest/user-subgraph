@@ -81,53 +81,10 @@ jobs:
     steps:
       - checkout
       - k8s/install
-      - k8s/initialize:
-          cluster: graphql-cluster
-
-  # infra:
-  #   executor: aws-cli/default
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup
-  #     - run:
-  #         name: Validate CloudFormation
-  #         command: |
-  #           aws cloudformation validate-template \
-  #             --template-body file://infra/template.json \
-  #             --region us-east-1
-  #     - run:
-  #         name: Deploy Infrastructure via CloudFormation
-  #         command: |
-  #           aws cloudformation deploy \
-  #             --stack-name ftf-user-subgraph \
-  #             --template-file ./infra/template.json \
-  #             --no-fail-on-empty-changeset \
-  #             --region us-east-1
-
-  # deploy:
-  #   executor: aws-ecr/default
-  #   steps:
-  #     - checkout
-  #     # get .env from secrets job.
-  #     - attach_workspace:
-  #         at: /home/circleci/project
-  #     - aws-ecr/build-and-push-image:
-  #         repo: ftf/user-subgraph
-  #         tag: latest
-  #         create-repo: true
-  #         lifecycle-policy-path: ./infra/ecr_lifecycle_policy.json
-
-  # TODO: test out if this actually works as expected
-  # cleanup:
-  #   executor: aws-cli/default
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup
-  #     - run:
-  #         name: Delete Stack if it Exists
-  #         command: |
-  #           aws cloudformation delete-stack \
-  #             --stack-name ftf-user-subgraph
+      # - k8s/initialize:
+      #     cluster: graphql-cluster
+      - run: which doctl
+      - run: which k8s
 
 workflows:
   version: 2
@@ -154,14 +111,6 @@ workflows:
             branches:
               only:
                 - main
-      # - deploy:
-      #     context: cuffney
-      #     requires:
-      #       - infra
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
 
   # nightly:
   #   triggers:
