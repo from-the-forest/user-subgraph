@@ -77,9 +77,7 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
-      # get .env from secrets job.
-      - attach_workspace:
-          at: /home/circleci/project
+      - aws-cli/setup
       - run:
           name: Validate CloudFormation
           command: |
