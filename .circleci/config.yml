@@ -6,7 +6,8 @@ orbs:
   aws-cli: circleci/aws-cli@3.1.4
   jq: circleci/jq@2.2.0
   aws-ecr: circleci/aws-ecr@8.2.1
-  cli: digitalocean/cli@0.1.1
+  doctl: digitalocean/cli@0.1.1
+  k8s: circleci/kubernetes@0.1.0
 
 jobs:
   install:
@@ -74,12 +75,14 @@ jobs:
           path: ./bin/user-subgraph
 
   infra:
-    executor: cli/digitalocean
+    executor:
+      name: go/default
+      tag: 1.19.4
     steps:
       - checkout
-      - run:
-          name: Create Kubernetes Infrastructure
-          command: doctl account get
+      - k8s/install
+      - k8s/initialize:
+          cluster: graphql-cluster
 
   # infra:
   #   executor: aws-cli/default
