@@ -103,7 +103,7 @@ jobs:
           repo: ftf/user-subgraph
           tag: latest
           create-repo: true
-          lifecycle-policy-path: ../infra/ecr_lifecycle_policy.json
+          lifecycle-policy-path: ./infra/ecr_lifecycle_policy.json
 
   # TODO: test out if this actually works as expected
   cleanup:
