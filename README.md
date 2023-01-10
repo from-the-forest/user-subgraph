@@ -50,11 +50,11 @@
     - [ ] Deployment
     - [ ] Integration Testing
   - [ ] Nightly Workflow
-    - [ ] tear down stack
+    - [x] tear down stack (to avoid extra costs)
     - [ ] check for packages that are out of date
 - [ ] Deployment
   - [x] Dockerize
-  - [ ] deploy as
+  - [ ] deploy in a compute agnostic way
     - [ ] serverless
     - [ ] standalone
     - [ ] kubernetes
