@@ -2,9 +2,12 @@
     "rules": [
         {
             "rulePriority": 1,
-            "description": "delete untagged images",
+            "description": "Expire images older than 3 days",
             "selection": {
-                "tagStatus": "untagged"
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": 3
             },
             "action": {
                 "type": "expire"
