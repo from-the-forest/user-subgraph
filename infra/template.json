@@ -1,5 +1,12 @@
 {
     "Parameters": {},
-    "Resources": {},
+    "Resources": {
+        "Type": "AWS::SSM::Parameter",
+        "Properties": {
+            "Description": "this is just so there is at least 1 resource.  otherwise cloudformation fails.",
+            "Name": "tmp",
+            "Value": "tmp"
+        }
+    },
     "Outputs": {}
 }

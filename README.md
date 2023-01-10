@@ -26,7 +26,9 @@
   - [x] user comes from context
   - [ ] data loader(s) in context
   - [ ] Parse request context to get user
-- [x] Unit Testing
+- [ ] Unit Testing
+  - [x] 1st test written
+  - [ ] Coverage Report
 - [ ] Schema
   - [ ] Scalars
 - [ ] Relay
@@ -38,14 +40,18 @@
 - [ ] Directives
   - [ ] @depricated
 - [x] CI
-  - [x] Install
-  - [x] Secrets
-  - [x] Build
-  - [x] Schema Linting
-  - [x] Unit Testing
-  - [ ] Infra
-  - [ ] Deployment
-  - [ ] Integration Testing
+  - [ ] Primary Workflow
+    - [x] Install
+    - [x] Secrets
+    - [x] Build
+    - [x] Schema Linting
+    - [x] Unit Testing
+    - [ ] Infra
+    - [ ] Deployment
+    - [ ] Integration Testing
+  - [ ] Nightly Workflow
+    - [ ] tear down stack
+    - [ ] check for packages that are out of date
 - [ ] Deployment
   - [x] Dockerize
   - [ ] deploy as
