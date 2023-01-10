@@ -4,7 +4,7 @@
         "Placeholder": {
             "Type": "AWS::SSM::Parameter",
             "Properties": {
-                "Type": "text",
+                "Type": "String",
                 "Name": "tmp",
                 "Value": "tmp",
                 "Description": "this is just so there is at least 1 resource.  otherwise cloudformation fails.",
