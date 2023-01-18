@@ -59,8 +59,8 @@ jobs:
       - checkout
       - docker/check:
           registry: registry.digitalocean.com/from-the-forest
-          docker-username: $DO_TOKEN
-          docker-password: $DO_TOKEN
+          docker-username: DO_TOKEN
+          docker-password: DO_TOKEN
       - docker/build:
           image: ftf/user-subgraph
           tag: latest
