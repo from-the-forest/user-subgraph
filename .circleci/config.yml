@@ -57,19 +57,18 @@ jobs:
     steps:
       - setup_remote_docker
       - checkout
-      - docker/check
+      - docker/check:
+          registry: registry.digitalocean.com/from-the-forest
+          docker-username: $DO_TOKEN
+          docker-password: $DO_TOKEN
       - docker/build:
           image: ftf/user-subgraph
           tag: latest
       - docker/push:
           registry: registry.digitalocean.com/from-the-forest
-          docker-username: ${DO_TOKEN}
-          docker-password: ${DO_TOKEN}
-          digest-path: /tmp/digest.txt
+
           image: ftf/user-subgraph
-      - run:
-          command: |
-            echo "Digest is: $(</tmp/digest.txt)"
+          tag: latest
 
 workflows:
   version: 2
