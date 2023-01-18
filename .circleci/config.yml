@@ -66,7 +66,6 @@ jobs:
           tag: latest
       - docker/push:
           registry: registry.digitalocean.com/from-the-forest
-
           image: ftf/user-subgraph
           tag: latest
 
@@ -81,6 +80,7 @@ workflows:
             - install
             - secrets
       - build-and-push:
+          context: ftf
           requires:
             - install
             - secrets
