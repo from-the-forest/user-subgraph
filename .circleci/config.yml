@@ -82,7 +82,7 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-      - kubernetes/create-or-update-resouce:
+      - kubernetes/create-or-update-resource:
         resource-file-path: ./deployment.yml
 
 workflows:
