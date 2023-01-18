@@ -24,4 +24,6 @@ Root query
 type Query {
   "The currently logged in user"
   whoami: User!
+  "Hostname of the machine resolving this query"
+  host: String!
 }

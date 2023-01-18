@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"os"
 	c "user/graph/context"
 	graph "user/graph/generated"
 	"user/graph/model"
@@ -15,6 +16,11 @@ import (
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 	user := ctx.Value(c.UserCtxKey).(*model.User)
 	return user, nil
+}
+
+// Host is the resolver for the host field.
+func (r *queryResolver) Host(ctx context.Context) (string, error) {
+	return os.Hostname()
 }
 
 // Query returns graph.QueryResolver implementation.
