@@ -85,14 +85,3 @@ workflows:
           requires:
             - install
             - secrets
-
-  # nightly:
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 0 * * *" # ~8PM EST.
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #   jobs:
-  #     - cleanup
