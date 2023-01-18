@@ -1,13 +1,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.3
   go: circleci/go@1.7.1
-  aws-cli: circleci/aws-cli@3.1.4
-  jq: circleci/jq@2.2.0
-  aws-ecr: circleci/aws-ecr@8.2.1
-  doctl: digitalocean/cli@0.1.1
-  k8s: circleci/kubernetes@0.1.0
+  docker: circleci/docker@2.2.0
 
 jobs:
   install:
@@ -55,7 +50,6 @@ jobs:
       tag: 1.19.4
     steps:
       - checkout
-      - node/install
       - run: make lint
 
   build:
@@ -71,8 +65,10 @@ jobs:
       - go/mod-download
       - go/save-cache
       - run: make build
-      - store_artifacts:
-          path: ./bin/user-subgraph
+      - docker/install-docker
+      - docker/build:
+          image: ftf/user-subgraph
+          tag: latest
 
 workflows:
   version: 2
