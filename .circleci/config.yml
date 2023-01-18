@@ -99,7 +99,7 @@ workflows:
             - install
             - secrets
             - test
-      - dep0loy:
+      - deploy:
           context: ftf
           requires:
             - build-and-push
