@@ -62,6 +62,7 @@ jobs:
           docker-username: DO_TOKEN
           docker-password: DO_TOKEN
       - docker/build:
+          registry: registry.digitalocean.com/from-the-forest
           image: ftf/user-subgraph
           tag: latest
       - docker/push:
