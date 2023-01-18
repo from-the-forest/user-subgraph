@@ -10,8 +10,9 @@
 ## Getting Started
 
 1. `make setup`
-2. `make dev`
-3. `open http://localhost:8000`
+2. ensure your `.env` file is completely filled out
+3. `make dev`
+4. `open http://localhost:4000`
 
 ## Commands
 

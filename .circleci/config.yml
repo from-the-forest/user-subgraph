@@ -74,18 +74,6 @@ jobs:
       - store_artifacts:
           path: ./bin/user-subgraph
 
-  infra:
-    executor:
-      name: go/default
-      tag: 1.19.4
-    steps:
-      - checkout
-      - k8s/install
-      # - k8s/initialize:
-      #     cluster: graphql-cluster
-      - run: which doctl
-      - run: which k8s
-
 workflows:
   version: 2
   primary:
@@ -101,16 +89,6 @@ workflows:
           requires:
             - install
             - secrets
-      - infra:
-          context: cuffney
-          requires:
-            - build
-            - test
-            - lint
-          filters:
-            branches:
-              only:
-                - main
 
   # nightly:
   #   triggers:
