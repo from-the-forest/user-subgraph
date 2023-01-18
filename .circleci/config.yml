@@ -52,23 +52,21 @@ jobs:
       - checkout
       - run: make lint
 
-  build:
-    executor:
-      name: go/default
-      tag: 1.19.4
+  build-and-push:
+    executor: docker/docker
     steps:
+      - setup_remote_docker
       - checkout
-      # get .env from secrets job.
-      - attach_workspace:
-          at: /home/circleci/project
-      - go/load-cache
-      - go/mod-download
-      - go/save-cache
-      - run: make build
-      - docker/install-docker
+      - docker/check
       - docker/build:
           image: ftf/user-subgraph
           tag: latest
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: ftf/user-subgraph
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
 
 workflows:
   version: 2
@@ -76,12 +74,12 @@ workflows:
     jobs:
       - install
       - secrets
-      - lint
       - test:
           requires:
             - install
             - secrets
-      - build:
+      - build-and-push:
           requires:
             - install
             - secrets
+            - test
