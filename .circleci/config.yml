@@ -77,6 +77,8 @@ jobs:
       - run: doctl registry garbage-collection start
 
   deploy:
+    docker:
+      - image: "cimg/base:stable"
     steps:
       - checkout
       - kubernetes/install
