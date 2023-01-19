@@ -37,12 +37,12 @@ func playgroundHandler() gin.HandlerFunc {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Printf("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "4000"
 	}
 
 	// create server
