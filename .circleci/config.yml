@@ -66,11 +66,20 @@ jobs:
       - docker/build:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph
-          tag: latest
+          tag: $CIRCLE_SHA1
       - docker/push:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph
-          tag: latest
+          tag: $CIRCLE_SHA1
+      # TODO: also push the tag as latest
+      # - docker/build:
+      #     registry: registry.digitalocean.com/from-the-forest
+      #     image: user-subgraph
+      #     tag: latest
+      # - docker/push:
+      #     registry: registry.digitalocean.com/from-the-forest
+      #     image: user-subgraph
+      #     tag: latest
 
   deploy:
     docker:
@@ -82,6 +91,8 @@ jobs:
       - doctl/initialize:
           digitalocean-access-token: DO_TOKEN
       - run: doctl kubernetes cluster kubeconfig save ftf-main-cluster
+      - kubernetes/update-container-image:
+          container-image-updates: registry.digitalocean.com/from-the-forest/user-subgraph:$CIRCLE_SHA
       - kubernetes/create-or-update-resource:
           resource-file-path: ./.k8s/deployment.yml
 
