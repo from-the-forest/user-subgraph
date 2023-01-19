@@ -1,7 +1,10 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+# kubectl create -f ./.k8s/deployment.yml
+# kubectl delete -f ./.k8s/deployment.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-subgraph
+  name: user-subgraph-deployment
   labels:
     app: user-subgraph
 spec:

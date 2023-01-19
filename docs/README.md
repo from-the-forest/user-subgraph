@@ -10,3 +10,7 @@
 
 - The schema is the source of truth.
 - It's up to the developer / team to decide if logic should live in resolvers or in downstream services.  That is a decision best made based on scaling and compute requirements.
+
+## K8s help
+
+https://www.youtube.com/watch?v=cJKdo-glRD0
