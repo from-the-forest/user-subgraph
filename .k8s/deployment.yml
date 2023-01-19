@@ -25,6 +25,7 @@ spec:
       containers:
         - name: user-subgraph
           image: registry.digitalocean.com/from-the-forest/user-subgraph:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 4000
 ---
