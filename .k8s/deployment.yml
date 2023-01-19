@@ -1,3 +1,7 @@
+# #####################################################################
+# Deployment (Pods)
+# #####################################################################
+
 # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 # kubectl create -f ./.k8s/deployment.yml
 # kubectl delete -f ./.k8s/deployment.yml
@@ -22,3 +26,44 @@ spec:
           image: registry.digitalocean.com/from-the-forest/user-subgraph:latest
           ports:
             - containerPort: 4000
+---
+# #####################################################################
+# Service
+# #####################################################################
+# https://kubernetes.io/docs/concepts/services-networking/service/
+# kubectl create -f ./.k8s/service.yml
+# kubectl delete -f ./.k8s/service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-subgraph-service
+spec:
+  selector:
+    app: user-subgraph
+  ports:
+    - port: 4000
+  type: ClusterIP
+---
+# #####################################################################
+# Ingress
+# #####################################################################
+# https://marketplace.digitalocean.com/apps/nginx-ingress-controller
+# kubectl create -f ./.k8s/ingress.yml
+# kubectl delete -f ./.k8s/ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-echo
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: fromtheforest.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: user-subgraph-service
+                port:
+                  number: 4000
