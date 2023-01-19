@@ -76,14 +76,14 @@ jobs:
       #     digitalocean-access-token: DO_TOKEN
       # - run: doctl registry garbage-collection start
 
-  deploy:
-    docker:
-      - image: "cimg/base:stable"
-    steps:
-      - checkout
-      - kubernetes/install
-      - kubernetes/create-or-update-resource:
-          resource-file-path: ./deployment.yml
+  # deploy:
+  #   docker:
+  #     - image: "cimg/base:stable"
+  #   steps:
+  #     - checkout
+  #     - kubernetes/install
+  #     - kubernetes/create-or-update-resource:
+  #         resource-file-path: ./deployment.yml
 
 workflows:
   version: 2
@@ -101,7 +101,7 @@ workflows:
             - install
             - secrets
             - test
-      - deploy:
-          context: ftf
-          requires:
-            - build-and-push
+      # - deploy:
+      #     context: ftf
+      #     requires:
+      #       - build-and-push
