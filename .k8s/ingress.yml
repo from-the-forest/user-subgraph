@@ -1,0 +1,19 @@
+# https://marketplace.digitalocean.com/apps/nginx-ingress-controller
+# kubectl create -f ./.k8s/ingress.yml
+# kubectl delete -f ./.k8s/ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-echo
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: user-subgraph-service
+                port:
+                  number: 4000
