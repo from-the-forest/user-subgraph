@@ -92,7 +92,7 @@ jobs:
           digitalocean-access-token: DO_TOKEN
       - run: doctl kubernetes cluster kubeconfig save ftf-main-cluster
       - kubernetes/update-container-image:
-          container-image-updates: registry.digitalocean.com/from-the-forest/user-subgraph:$CIRCLE_SHA
+          container-image-updates: user-subgraph=registry.digitalocean.com/from-the-forest/user-subgraph:$CIRCLE_SHA
           resource-file-path: ./.k8s/deployment.yml
       - kubernetes/create-or-update-resource:
           resource-file-path: ./.k8s/deployment.yml
