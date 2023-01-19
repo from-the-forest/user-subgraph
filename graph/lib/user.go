@@ -7,9 +7,9 @@ import (
 func FindUserByID(id string) (*model.User, error) {
 	user := &model.User{
 		ID:        "1",
-		FirstName: "Nox",
+		FirstName: "Willow",
 		LastName:  "Cuffney",
-		Email:     "noxman@gmail.com",
+		Email:     "littlewilly@gmail.com",
 	}
 	return user, nil
 }
