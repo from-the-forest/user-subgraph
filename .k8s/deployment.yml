@@ -62,7 +62,7 @@ spec:
     - host: fromtheforest.io
       http:
         paths:
-          - path: /
+          - path: /v1/graphql/user
             pathType: Prefix
             backend:
               service:
