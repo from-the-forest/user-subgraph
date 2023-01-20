@@ -6,6 +6,7 @@ WORKDIR /usr/src/app
 
 ENV PORT 4000
 ENV ENV production
+ENV SUBGRAPH_SECRET some-secret-value
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY go.mod go.sum ./

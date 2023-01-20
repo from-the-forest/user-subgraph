@@ -44,9 +44,12 @@ func CorsMiddleware() gin.HandlerFunc {
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-Subgraph-Secret")
 		c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
 
+		// TODO: this should be in an auth middleware
 		// []string -> string
-		subgraphSecret := strings.Join(c.Request.Header["X-Subgraph-Secret"], "")
-		if subgraphSecret != "abc123" {
+		subgraphSecretHeader := strings.Join(c.Request.Header["X-Subgraph-Secret"], "")
+		subgraphSecret := os.Getenv("SUBGRAPH_SECRET")
+		// if the secret header is not present - the request is not authorized
+		if subgraphSecretHeader != subgraphSecret {
 			c.AbortWithStatus(401)
 			return
 		}
