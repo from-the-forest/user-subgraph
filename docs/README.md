@@ -14,3 +14,4 @@
 ## K8s help
 
 https://www.youtube.com/watch?v=cJKdo-glRD0
+https://www.youtube.com/watch?v=MpovOI5eK58

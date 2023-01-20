@@ -8,14 +8,19 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-echo
+  annotations:
+    cert-manager.io/issuer: letsencrypt-nginx
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.fromtheforest.io
+      secretName: letsencrypt-nginx
   rules:
     - host: api.fromtheforest.io
       http:
         paths:
           - path: /v1/graphql/user
-            # - path: /
             pathType: Prefix
             backend:
               service:
