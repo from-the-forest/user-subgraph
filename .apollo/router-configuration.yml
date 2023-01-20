@@ -1,0 +1,17 @@
+# this gets copied over into your cloud router configuration in apollo studio
+# https://studio.apollographql.com/graph/cuffney-supergraph-vokiem/settings/variant/routing?variant=main
+cors:
+  origins:
+    - https://studio.apollographql.com
+headers:
+  # Header rules for all subgraphs
+  all:
+    request:
+      - insert:
+          name: "X-Subgraph-Secret"
+          value: "abc123"
+  subgraphs:
+    user-subgraph:
+      request:
+        - propagate:
+            matching: ".*"

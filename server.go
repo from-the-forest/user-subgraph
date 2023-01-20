@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 	"user/graph"
 	c "user/graph/context"
 	generated "user/graph/generated"
@@ -40,8 +41,15 @@ func CorsMiddleware() gin.HandlerFunc {
 		// c.Header("Access-Control-Allow-Origin", "https://fromtheforest.io")
 		c.Header("Access-Control-Allow-Origin", "https://studio.apollographql.com")
 		c.Header("Access-Control-Allow-Credentials", "true")
-		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-Subgraph-Secret")
 		c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+
+		// []string -> string
+		subgraphSecret := strings.Join(c.Request.Header["X-Subgraph-Secret"], "")
+		if subgraphSecret != "abc123" {
+			c.AbortWithStatus(401)
+			return
+		}
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
