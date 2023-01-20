@@ -114,7 +114,7 @@ jobs:
       - checkout
       # NOTE: it seems like rover dosen't support wildcards and thus we can't have multiple gql files
       - run: |
-          npx @apollo/rover subgraph publish \
+          APOLLO_KEY=$APOLLO_KEY npx @apollo/rover subgraph publish \
             cuffney-supergraph-vokiem@main \
             --name user-subgraph \
             --schema ./graph/schema/schema.graphql
