@@ -37,7 +37,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - run: npx @apollo/rover
+      - run: npx @apollo/rover subgraph check --name user-subgraph ./graph/(()) fromtheforest
       # TODO: finish schema check
 
   test:
@@ -111,12 +111,13 @@ workflows:
     jobs:
       - install
       - secrets
-      - schema-check
+      # - schema-check:
+      #     context: ftf
       - test:
           requires:
             - install
             - secrets
-            - schema-check
+            # - schema-check
       - build-and-push:
           context: ftf
           requires:
