@@ -52,7 +52,7 @@ func main() {
 	r.Use(c.ContextMiddleware())
 
 	// add route handlers
-	r.POST("/query", graphqlHandler())
+	r.POST("/", graphqlHandler())
 	r.GET("/", playgroundHandler())
 
 	// start server
