@@ -1,5 +1,5 @@
 # FROM golang:1.19
-# Attempting to use alpine to reduce image size
+# Useing alpine to reduce image size by about 50% ~200Mb
 FROM golang:1.19-alpine
 
 WORKDIR /usr/src/app
