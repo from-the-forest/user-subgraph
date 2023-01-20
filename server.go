@@ -52,8 +52,9 @@ func main() {
 	r.Use(c.ContextMiddleware())
 
 	// add route handlers
+	r.GET("/v1/graphql/user", graphqlHandler())
 	r.POST("/v1/graphql/user", graphqlHandler())
-	r.GET("/v1/graphql/user", playgroundHandler())
+	r.GET("/v1/graphql/user/playground", playgroundHandler())
 
 	// start server
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
