@@ -9,7 +9,7 @@ headers:
     request:
       - insert:
           name: "X-Subgraph-Secret"
-          value: "abc123"
+          value: "${env.SUBGRAPH_SECRET}"
   subgraphs:
     user-subgraph:
       request:
