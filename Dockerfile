@@ -1,4 +1,6 @@
-FROM golang:1.19
+# FROM golang:1.19
+# Attempting to use alpine to reduce image size
+FROM golang:1.19-alpine
 
 WORKDIR /usr/src/app
 
