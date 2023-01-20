@@ -4,6 +4,15 @@ extend schema
     import: ["@key", "@shareable"]
   )
 
+interface Node {
+  "Relay node id"
+  id: ID!
+}
+
+# TODO: type PageInfo
+
+scalar Email
+
 """
 User type
 """

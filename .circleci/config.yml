@@ -33,12 +33,16 @@ jobs:
       - store_artifacts:
           path: .env
 
-  schema-check:
+  schema:
     executor: node/default
     steps:
       - checkout
-      - run: npx @apollo/rover subgraph check --name user-subgraph ./graph/(()) fromtheforest
-      # TODO: finish schema check
+      # NOTE: it seems like rover dosen't support wildcards and thus we can't have multiple gql files
+      - run: |
+          npx @apollo/rover subgraph check \
+            cuffney-supergraph-vokiem@main \
+            --name user-subgraph \
+            --schema ./graph/schema/schema.graphql
 
   test:
     executor:
@@ -104,19 +108,30 @@ jobs:
       - kubernetes/create-or-update-resource:
           resource-file-path: ./.k8s/ingress.yml
 
+  publish:
+    executor: node/default
+    steps:
+      - checkout
+      # NOTE: it seems like rover dosen't support wildcards and thus we can't have multiple gql files
+      - run: |
+          npx @apollo/rover subgraph publish \
+            cuffney-supergraph-vokiem@main \
+            --name user-subgraph \
+            --schema ./graph/schema/schema.graphql
+
 workflows:
   version: 2
   primary:
     jobs:
       - install
       - secrets
-      # - schema-check:
-      #     context: ftf
+      - schema:
+          context: ftf
       - test:
           requires:
             - install
             - secrets
-            # - schema-check
+            - schema
       - build-and-push:
           context: ftf
           requires:
@@ -127,7 +142,7 @@ workflows:
           context: ftf
           requires:
             - build-and-push
-      # - publish:
-      #     context: ftf
-      #     requires:
-      #       - deploy
+      - publish:
+          context: ftf
+          requires:
+            - deploy
