@@ -75,19 +75,14 @@ jobs:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph
           tag: $CIRCLE_SHA1
+      - docker/build:
+          registry: registry.digitalocean.com/from-the-forest
+          image: user-subgraph
+          tag: latest
       - docker/push:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph
-          tag: $CIRCLE_SHA1
-      # TODO: also push the tag as latest
-      # - docker/build:
-      #     registry: registry.digitalocean.com/from-the-forest
-      #     image: user-subgraph
-      #     tag: latest
-      # - docker/push:
-      #     registry: registry.digitalocean.com/from-the-forest
-      #     image: user-subgraph
-      #     tag: latest
+          tag: $CIRCLE_SHA1,latest
 
   deploy:
     docker:
