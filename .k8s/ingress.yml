@@ -14,7 +14,8 @@ spec:
     - host: api.fromtheforest.io
       http:
         paths:
-          - path: /v1/graphql/user
+          # - path: /v1/graphql/user
+          - path: /
             pathType: Prefix
             backend:
               service:
