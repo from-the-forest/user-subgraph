@@ -1,0 +1,16 @@
+# #####################################################################
+# Service
+#
+# https://kubernetes.io/docs/concepts/services-networking/service/
+# #####################################################################
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-subgraph-service
+spec:
+  selector:
+    app: user-subgraph
+  ports:
+    - port: 4000
+  type: ClusterIP

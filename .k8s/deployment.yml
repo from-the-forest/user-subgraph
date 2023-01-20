@@ -28,44 +28,44 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 4000
----
-# #####################################################################
-# Service
-#
-# https://kubernetes.io/docs/concepts/services-networking/service/
-# #####################################################################
+# ---
+# # #####################################################################
+# # Service
+# #
+# # https://kubernetes.io/docs/concepts/services-networking/service/
+# # #####################################################################
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: user-subgraph-service
-spec:
-  selector:
-    app: user-subgraph
-  ports:
-    - port: 4000
-  type: ClusterIP
----
-# #####################################################################
-# Ingress
-#
-# https://marketplace.digitalocean.com/apps/nginx-ingress-controller
-# #####################################################################
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: user-subgraph-service
+# spec:
+#   selector:
+#     app: user-subgraph
+#   ports:
+#     - port: 4000
+#   type: ClusterIP
+# ---
+# # #####################################################################
+# # Ingress
+# #
+# # https://marketplace.digitalocean.com/apps/nginx-ingress-controller
+# # #####################################################################
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-echo
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: fromtheforest.io
-      http:
-        paths:
-          - path: /v1/graphql/user
-            pathType: Prefix
-            backend:
-              service:
-                name: user-subgraph-service
-                port:
-                  number: 4000
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ingress-echo
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: fromtheforest.io
+#       http:
+#         paths:
+#           - path: /v1/graphql/user
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: user-subgraph-service
+#                 port:
+#                   number: 4000
