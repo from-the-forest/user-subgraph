@@ -11,6 +11,7 @@ metadata:
   namespace: user-subgraph
   annotations:
     cert-manager.io/issuer: letsencrypt-nginx
+    # /v1/graphql/user -> /
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
@@ -24,7 +25,6 @@ spec:
         paths:
           - path: /v1/graphql/user
             pathType: Prefix
-            pathRewrite: /
             backend:
               service:
                 name: user-subgraph-service
