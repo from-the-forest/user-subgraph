@@ -3,6 +3,7 @@
 cors:
   origins:
     - https://studio.apollographql.com
+    - https://api.fromtheforest.io/v1/graphql
 headers:
   # Header rules for all subgraphs
   all:
