@@ -33,7 +33,7 @@ func graphqlHandler() gin.HandlerFunc {
 
 // Defining the Playground handler
 func playgroundHandler() gin.HandlerFunc {
-	h := playground.Handler("GraphQL", "/v1/graphql/user")
+	h := playground.Handler("GraphQL", "/")
 
 	return func(c *gin.Context) {
 		h.ServeHTTP(c.Writer, c.Request)
@@ -108,10 +108,10 @@ func main() {
 	}
 
 	// add route handlers
-	r.GET("/v1/graphql/user", graphqlHandler())
-	r.POST("/v1/graphql/user", graphqlHandler())
+	r.GET("/", graphqlHandler())
+	r.POST("/", graphqlHandler())
 	if env != Production {
-		r.GET("/v1/graphql/user/playground", playgroundHandler())
+		r.GET("/playground", playgroundHandler())
 	}
 
 	// start server

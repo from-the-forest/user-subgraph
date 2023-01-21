@@ -23,6 +23,7 @@ spec:
         paths:
           - path: /v1/graphql/user
             pathType: Prefix
+            pathRewrite: /
             backend:
               service:
                 name: user-subgraph-service
