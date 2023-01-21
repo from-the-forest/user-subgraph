@@ -10,6 +10,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-subgraph-deployment
+  namespace: user-subgraph
   labels:
     app: user-subgraph
 spec:

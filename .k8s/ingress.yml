@@ -8,6 +8,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-echo
+  namespace: user-subgraph
   annotations:
     cert-manager.io/issuer: letsencrypt-nginx
 spec:

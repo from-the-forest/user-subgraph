@@ -14,6 +14,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
+const (
+	Production  string = "production"
+	Development string = "development"
+)
+
 // Defining the Graphql handler
 func graphqlHandler() gin.HandlerFunc {
 	config := generated.Config{
@@ -44,18 +49,24 @@ func CorsMiddleware() gin.HandlerFunc {
 		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-Subgraph-Secret")
 		c.Header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
 
-		// TODO: this should be in an auth middleware
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func SubgraphSecretMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
 		// []string -> string
 		subgraphSecretHeader := strings.Join(c.Request.Header["X-Subgraph-Secret"], "")
 		subgraphSecret := os.Getenv("SUBGRAPH_SECRET")
 		// if the secret header is not present - the request is not authorized
 		if subgraphSecretHeader != subgraphSecret {
 			c.AbortWithStatus(401)
-			return
-		}
-
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
 			return
 		}
 
@@ -66,8 +77,20 @@ func CorsMiddleware() gin.HandlerFunc {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Printf("Error loading .env file")
+		log.Printf("Warning: failed to load .env file")
 	}
+
+	env := os.Getenv("ENV")
+	if env == "" {
+		log.Printf("Warning: no ENV specified - defaulting to %s", Production)
+		env = Production
+	}
+
+	var ginMode = gin.ReleaseMode
+	if env != Production {
+		ginMode = gin.DebugMode
+	}
+	gin.SetMode(ginMode)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -79,14 +102,22 @@ func main() {
 
 	// add middleware
 	r.Use(c.ContextMiddleware())
-	r.Use(CorsMiddleware())
+	if env == Production {
+		r.Use(CorsMiddleware())
+		r.Use(SubgraphSecretMiddleware())
+	}
 
 	// add route handlers
 	r.GET("/v1/graphql/user", graphqlHandler())
 	r.POST("/v1/graphql/user", graphqlHandler())
-	r.GET("/v1/graphql/user/playground", playgroundHandler())
+	if env != Production {
+		r.GET("/v1/graphql/user/playground", playgroundHandler())
+	}
 
 	// start server
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	if env != Development {
+		log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	}
+
 	r.Run()
 }
