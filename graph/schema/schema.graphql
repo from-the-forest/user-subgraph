@@ -7,6 +7,7 @@ extend schema
     url: "https://specs.apollo.dev/federation/v2.1"
     import: ["@key", "@shareable"]
   )
+  @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@tag"])
 
 # #############################################################################
 # Custom Directives
@@ -43,7 +44,7 @@ scalar Email
 """
 User type
 """
-type User implements Node @key(fields: "id") {
+type User implements Node @key(fields: "id") @tag(name: "tag-test") {
   "User's first name"
   firstName: String!
   "Node ID"
