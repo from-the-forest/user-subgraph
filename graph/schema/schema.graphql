@@ -92,7 +92,7 @@ type Query {
   "list of users"
   users(input: UsersInput): UsersConnection!
   "relay node query"
-  node(id: ID!): Node!
+  node(id: ID!): Node
 }
 
 type Mutation {

@@ -53,13 +53,15 @@ func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*mo
 
 // Node is the resolver for the node field.
 func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
-	nodeType := lib.FromGlobalId(id).Type
-	nodeId := lib.FromGlobalId(id).ID
-	switch nodeType {
-	case "User":
-		return lib.FindUserByID(nodeId)
+	globalId, err := lib.FromGlobalId(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid global id %s", id)
 	}
-	panic(fmt.Errorf("not implemented for type %s", nodeType))
+	switch globalId.Type {
+	case "User":
+		return lib.FindUserByID(globalId.ID)
+	}
+	return nil, fmt.Errorf("not implemented for type %s", globalId.Type)
 }
 
 // FullName is the resolver for the fullName field.
