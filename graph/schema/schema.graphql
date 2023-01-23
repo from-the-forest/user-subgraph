@@ -91,6 +91,8 @@ type Query {
   host: String! @deprecated(reason: "this is going to be removed")
   "list of users"
   users(input: UsersInput): UsersConnection!
+  "relay node query"
+  node(id: ID!): Node!
 }
 
 type Mutation {

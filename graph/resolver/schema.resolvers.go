@@ -6,6 +6,7 @@ package resolver
 
 import (
 	"context"
+	"fmt"
 	"os"
 	c "user/graph/context"
 	graph "user/graph/generated"
@@ -48,6 +49,17 @@ func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*mo
 		},
 		Edges: edges,
 	}, nil
+}
+
+// Node is the resolver for the node field.
+func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
+	nodeType := lib.FromGlobalId(id).Type
+	nodeId := lib.FromGlobalId(id).ID
+	switch nodeType {
+	case "User":
+		return lib.FindUserByID(nodeId)
+	}
+	panic(fmt.Errorf("not implemented for type %s", nodeType))
 }
 
 // FullName is the resolver for the fullName field.
