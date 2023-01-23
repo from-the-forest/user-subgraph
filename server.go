@@ -6,10 +6,10 @@ import (
 	"log"
 	"os"
 	"strings"
-	"user/graph"
 	c "user/graph/context"
 	generated "user/graph/generated"
 	"user/graph/model"
+	resolver "user/graph/resolver"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -26,7 +26,7 @@ const (
 // Defining the Graphql handler
 func graphqlHandler() gin.HandlerFunc {
 	config := generated.Config{
-		Resolvers: &graph.Resolver{},
+		Resolvers: &resolver.Resolver{},
 	}
 
 	// NOTE: this is only here because `Directives` is a struct not an interface :(
