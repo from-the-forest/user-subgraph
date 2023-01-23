@@ -3,13 +3,17 @@ generate:
 	go run github.com/99designs/gqlgen generate
 
 # sets up project
-setup: install generate
+setup: env install generate
 
 # starts server with hot reloading
 dev:
 	npx nodemon \
 		--exec go run ./server.go \
 		--signal SIGTERM
+
+# create template .env file
+env:
+	cp .env.sample .env
 
 # install go and npm dependencies
 install:
@@ -42,5 +46,8 @@ integration:
 start:
 	go run ./server.go
 
+docker-build:
+	docker build -t ftf/user-subgraph:latest .
 
-
+docker-run:
+	docker run -p 4000:4000 ftf/user-subgraph:latest

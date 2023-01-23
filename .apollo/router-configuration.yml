@@ -1,0 +1,18 @@
+# this gets copied over into your cloud router configuration in apollo studio
+# https://studio.apollographql.com/graph/cuffney-supergraph-vokiem/settings/variant/routing?variant=main
+cors:
+  origins:
+    - https://studio.apollographql.com
+    - https://api.fromtheforest.io/v1/graphql
+headers:
+  # Header rules for all subgraphs
+  all:
+    request:
+      - insert:
+          name: "X-Subgraph-Secret"
+          value: "${env.SUBGRAPH_SECRET}"
+  subgraphs:
+    user-subgraph:
+      request:
+        - propagate:
+            matching: ".*"

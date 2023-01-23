@@ -1,0 +1,1 @@
+Apollo's schema checks seem to only support 1 file - so we can't split these out into multiple gql files

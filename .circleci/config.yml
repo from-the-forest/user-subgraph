@@ -1,13 +1,11 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.3
   go: circleci/go@1.7.1
-  aws-cli: circleci/aws-cli@3.1.4
-  jq: circleci/jq@2.2.0
-  aws-ecr: circleci/aws-ecr@8.2.1
+  docker: circleci/docker@2.2.0
   doctl: digitalocean/cli@0.1.1
-  k8s: circleci/kubernetes@0.1.0
+  kubernetes: circleci/kubernetes@1.3.1
+  node: circleci/node@5.1.0
 
 jobs:
   install:
@@ -35,6 +33,16 @@ jobs:
       - store_artifacts:
           path: .env
 
+  schema:
+    executor: node/default
+    steps:
+      - checkout
+      - run: |
+          APOLLO_KEY=$APOLLO_KEY npx @apollo/rover subgraph check \
+            cuffney-supergraph-vokiem@main \
+            --name user-subgraph \
+            --schema ./graph/schema/schema.graphql
+
   test:
     executor:
       name: go/default
@@ -55,36 +63,62 @@ jobs:
       tag: 1.19.4
     steps:
       - checkout
-      - node/install
       - run: make lint
 
-  build:
-    executor:
-      name: go/default
-      tag: 1.19.4
+  build-and-push:
+    executor: docker/docker
     steps:
+      - setup_remote_docker
       - checkout
-      # get .env from secrets job.
-      - attach_workspace:
-          at: /home/circleci/project
-      - go/load-cache
-      - go/mod-download
-      - go/save-cache
-      - run: make build
-      - store_artifacts:
-          path: ./bin/user-subgraph
+      - docker/check:
+          registry: registry.digitalocean.com/from-the-forest
+          docker-username: DO_TOKEN
+          docker-password: DO_TOKEN
+      - docker/build:
+          registry: registry.digitalocean.com/from-the-forest
+          image: user-subgraph
+          tag: $CIRCLE_SHA1
+      - docker/build:
+          registry: registry.digitalocean.com/from-the-forest
+          image: user-subgraph
+          tag: latest
+      - docker/push:
+          registry: registry.digitalocean.com/from-the-forest
+          image: user-subgraph
+          tag: $CIRCLE_SHA1,latest
 
-  infra:
-    executor:
-      name: go/default
-      tag: 1.19.4
+  deploy:
+    docker:
+      - image: "cimg/base:stable"
     steps:
       - checkout
-      - k8s/install
-      # - k8s/initialize:
-      #     cluster: graphql-cluster
-      - run: which doctl
-      - run: which k8s
+      - kubernetes/install
+      - doctl/install
+      - doctl/initialize:
+          digitalocean-access-token: DO_TOKEN
+      - run: doctl kubernetes cluster kubeconfig save ftf-main-cluster
+      - kubernetes/create-or-update-resource:
+          resource-file-path: ./.k8s/namespace.yml
+      - kubernetes/update-container-image:
+          container-image-updates: user-subgraph=registry.digitalocean.com/from-the-forest/user-subgraph:$CIRCLE_SHA1
+          resource-file-path: ./.k8s/deployment.yml
+      - kubernetes/create-or-update-resource:
+          resource-file-path: ./.k8s/service.yml
+      - kubernetes/create-or-update-resource:
+          resource-file-path: ./.k8s/issuer.yml
+      - kubernetes/create-or-update-resource:
+          resource-file-path: ./.k8s/ingress.yml
+
+  publish:
+    executor: node/default
+    steps:
+      - checkout
+      # NOTE: it seems like rover dosen't support wildcards and thus we can't have multiple gql files
+      - run: |
+          APOLLO_KEY=$APOLLO_KEY npx @apollo/rover subgraph publish \
+            cuffney-supergraph-vokiem@main \
+            --name user-subgraph \
+            --schema ./graph/schema/schema.graphql
 
 workflows:
   version: 2
@@ -92,33 +126,24 @@ workflows:
     jobs:
       - install
       - secrets
-      - lint
+      - schema:
+          context: ftf
       - test:
           requires:
             - install
             - secrets
-      - build:
+            - schema
+      - build-and-push:
+          context: ftf
           requires:
             - install
             - secrets
-      - infra:
-          context: cuffney
-          requires:
-            - build
             - test
-            - lint
-          filters:
-            branches:
-              only:
-                - main
-
-  # nightly:
-  #   triggers:
-  #     - schedule:
-  #         cron: "0 0 * * *" # ~8PM EST.
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #   jobs:
-  #     - cleanup
+      - deploy:
+          context: ftf
+          requires:
+            - build-and-push
+      - publish:
+          context: ftf
+          requires:
+            - deploy

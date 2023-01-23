@@ -4,6 +4,15 @@ extend schema
     import: ["@key", "@shareable"]
   )
 
+interface Node {
+  "Relay node id"
+  id: ID!
+}
+
+# TODO: type PageInfo
+
+scalar Email
+
 """
 User type
 """
@@ -24,4 +33,6 @@ Root query
 type Query {
   "The currently logged in user"
   whoami: User!
+  "Hostname of the machine resolving this query"
+  host: String!
 }
