@@ -12,6 +12,11 @@ import (
 	"user/graph/model"
 )
 
+// DeleteUser is the resolver for the deleteUser field.
+func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (string, error) {
+	return id, nil
+}
+
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 	user := ctx.Value(c.UserCtxKey).(*model.User)
@@ -28,11 +33,15 @@ func (r *userResolver) FullName(ctx context.Context, obj *model.User) (string, e
 	return obj.FirstName + " " + obj.LastName, nil
 }
 
+// Mutation returns graph.MutationResolver implementation.
+func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
+
 // Query returns graph.QueryResolver implementation.
 func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
 // User returns graph.UserResolver implementation.
 func (r *Resolver) User() graph.UserResolver { return &userResolver{r} }
 
+type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type userResolver struct{ *Resolver }

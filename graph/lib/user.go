@@ -6,7 +6,7 @@ import (
 
 func FindUserByID(id string) (*model.User, error) {
 	user := &model.User{
-		ID:        "1",
+		ID:        ToGlobalID("User", "1"),
 		FirstName: "Willy",
 		LastName:  "Cuffney",
 		Email:     "littlewilly@gmail.com",
