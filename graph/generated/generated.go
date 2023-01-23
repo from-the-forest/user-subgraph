@@ -11,6 +11,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"user/graph/model"
+	"user/graph/scalar"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -39,6 +40,7 @@ type Config struct {
 type ResolverRoot interface {
 	Entity() EntityResolver
 	Query() QueryResolver
+	User() UserResolver
 }
 
 type DirectiveRoot struct {
@@ -59,6 +61,7 @@ type ComplexityRoot struct {
 	User struct {
 		Email     func(childComplexity int) int
 		FirstName func(childComplexity int) int
+		FullName  func(childComplexity int) int
 		ID        func(childComplexity int) int
 		LastName  func(childComplexity int) int
 	}
@@ -74,6 +77,9 @@ type EntityResolver interface {
 type QueryResolver interface {
 	Whoami(ctx context.Context) (*model.User, error)
 	Host(ctx context.Context) (string, error)
+}
+type UserResolver interface {
+	FullName(ctx context.Context, obj *model.User) (string, error)
 }
 
 type executableSchema struct {
@@ -150,6 +156,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.FirstName(childComplexity), true
 
+	case "User.fullName":
+		if e.complexity.User.FullName == nil {
+			break
+		}
+
+		return e.complexity.User.FullName(childComplexity), true
+
 	case "User.id":
 		if e.complexity.User.ID == nil {
 			break
@@ -223,20 +236,20 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema/relay.graphql", Input: `interface Node {
-  "Relay node id"
-  id: ID!
-}
-
-# TODO: type PageInfo
-`, BuiltIn: false},
-	{Name: "../schema/scalars.graphql", Input: `scalar Email
-`, BuiltIn: false},
 	{Name: "../schema/schema.graphql", Input: `extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.1"
     import: ["@key", "@shareable"]
   )
+
+interface Node {
+  "Relay node id"
+  id: ID!
+}
+
+# TODO: type PageInfo
+
+scalar Email
 
 """
 User type
@@ -248,6 +261,8 @@ type User implements Node @key(fields: "id") {
   id: ID!
   "User's last name"
   lastName: String!
+  "User's full name (example of a compound field)"
+  fullName: String!
   "User's email address"
   email: Email!
 }
@@ -258,6 +273,7 @@ Root query
 type Query {
   "The currently logged in user"
   whoami: User!
+  "Hostname of the machine resolving this query"
   host: String!
 }
 `, BuiltIn: false},
@@ -426,6 +442,8 @@ func (ec *executionContext) fieldContext_Entity_findUserByID(ctx context.Context
 				return ec.fieldContext_User_id(ctx, field)
 			case "lastName":
 				return ec.fieldContext_User_lastName(ctx, field)
+			case "fullName":
+				return ec.fieldContext_User_fullName(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			}
@@ -491,6 +509,8 @@ func (ec *executionContext) fieldContext_Query_whoami(ctx context.Context, field
 				return ec.fieldContext_User_id(ctx, field)
 			case "lastName":
 				return ec.fieldContext_User_lastName(ctx, field)
+			case "fullName":
+				return ec.fieldContext_User_fullName(ctx, field)
 			case "email":
 				return ec.fieldContext_User_email(ctx, field)
 			}
@@ -908,6 +928,50 @@ func (ec *executionContext) fieldContext_User_lastName(ctx context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _User_fullName(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_fullName(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.User().FullName(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_fullName(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_User_email(ctx, field)
 	if err != nil {
@@ -934,9 +998,9 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(scalar.Email)
 	fc.Result = res
-	return ec.marshalNEmail2string(ctx, field.Selections, res)
+	return ec.marshalNEmail2userᚋgraphᚋscalarᚐEmail(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_email(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3008,28 +3072,48 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			out.Values[i] = ec._User_firstName(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "id":
 
 			out.Values[i] = ec._User_id(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "lastName":
 
 			out.Values[i] = ec._User_lastName(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
+		case "fullName":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_fullName(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
+
+			})
 		case "email":
 
 			out.Values[i] = ec._User_email(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -3400,19 +3484,14 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNEmail2string(ctx context.Context, v interface{}) (string, error) {
-	res, err := graphql.UnmarshalString(v)
+func (ec *executionContext) unmarshalNEmail2userᚋgraphᚋscalarᚐEmail(ctx context.Context, v interface{}) (scalar.Email, error) {
+	var res scalar.Email
+	err := res.UnmarshalGQLContext(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNEmail2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	res := graphql.MarshalString(v)
-	if res == graphql.Null {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-	}
-	return res
+func (ec *executionContext) marshalNEmail2userᚋgraphᚋscalarᚐEmail(ctx context.Context, sel ast.SelectionSet, v scalar.Email) graphql.Marshaler {
+	return graphql.WrapContextMarshaler(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {

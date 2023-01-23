@@ -23,6 +23,8 @@ type User implements Node @key(fields: "id") {
   id: ID!
   "User's last name"
   lastName: String!
+  "User's full name (example of a compound field)"
+  fullName: String!
   "User's email address"
   email: Email!
 }

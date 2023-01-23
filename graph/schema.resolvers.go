@@ -23,7 +23,16 @@ func (r *queryResolver) Host(ctx context.Context) (string, error) {
 	return os.Hostname()
 }
 
+// FullName is the resolver for the fullName field.
+func (r *userResolver) FullName(ctx context.Context, obj *model.User) (string, error) {
+	return obj.FirstName + " " + obj.LastName, nil
+}
+
 // Query returns graph.QueryResolver implementation.
 func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
 
+// User returns graph.UserResolver implementation.
+func (r *Resolver) User() graph.UserResolver { return &userResolver{r} }
+
 type queryResolver struct{ *Resolver }
+type userResolver struct{ *Resolver }

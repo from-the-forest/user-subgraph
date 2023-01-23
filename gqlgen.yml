@@ -61,3 +61,11 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  User:
+    fields:
+      # we want to create a resolver for `User.fullName` since it's an derived field from the User object
+      fullName:
+        resolver: true
+  # scalar type `Email`
+  Email:
+    model: ./graph/scalar.Email

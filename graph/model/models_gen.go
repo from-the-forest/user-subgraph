@@ -2,6 +2,10 @@
 
 package model
 
+import (
+	"user/graph/scalar"
+)
+
 type Node interface {
 	IsNode()
 	// Relay node id
@@ -16,8 +20,10 @@ type User struct {
 	ID string `json:"id"`
 	// User's last name
 	LastName string `json:"lastName"`
+	// User's full name (example of a compound field)
+	FullName string `json:"fullName"`
 	// User's email address
-	Email string `json:"email"`
+	Email scalar.Email `json:"email"`
 }
 
 func (User) IsNode() {}
