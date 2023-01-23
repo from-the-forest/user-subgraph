@@ -1,0 +1,1 @@
+I think to better share these - it would be better for a seperate "scalar library"
