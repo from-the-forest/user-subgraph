@@ -28,13 +28,37 @@ interface Node {
   id: ID!
 }
 
-# TODO: type PageInfo
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
 
 # #############################################################################
 # Scalar(s)
 # #############################################################################
 
 scalar Email
+
+# #############################################################################
+# Query.users
+# #############################################################################
+
+input UsersInput {
+  first: Int = 10
+  after: String
+}
+
+type UsersConnection {
+  pageInfo: PageInfo!
+  edges: [UsersEdge!]!
+}
+
+type UsersEdge {
+  cursor: String!
+  node: User!
+}
 
 # #############################################################################
 # Entities
@@ -65,6 +89,8 @@ type Query {
   whoami: User!
   "Hostname of the machine resolving this query"
   host: String! @deprecated(reason: "this is going to be removed")
+  "list of users"
+  users(input: UsersInput): UsersConnection!
 }
 
 type Mutation {

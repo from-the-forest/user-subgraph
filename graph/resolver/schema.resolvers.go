@@ -9,6 +9,7 @@ import (
 	"os"
 	c "user/graph/context"
 	graph "user/graph/generated"
+	"user/graph/lib"
 	"user/graph/model"
 )
 
@@ -26,6 +27,27 @@ func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 // Host is the resolver for the host field.
 func (r *queryResolver) Host(ctx context.Context) (string, error) {
 	return os.Hostname()
+}
+
+// Users is the resolver for the users field.
+func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*model.UsersConnection, error) {
+	// get nodes from (mocked) database
+	users := lib.GetMockUsers()
+	// node to edge
+	edges := lib.Map(users, func(user model.User) *model.UsersEdge {
+		return &model.UsersEdge{
+			Node: &user,
+		}
+	})
+	return &model.UsersConnection{
+		PageInfo: &model.PageInfo{
+			StartCursor:     nil,
+			EndCursor:       nil,
+			HasPreviousPage: false,
+			HasNextPage:     false,
+		},
+		Edges: edges,
+	}, nil
 }
 
 // FullName is the resolver for the fullName field.

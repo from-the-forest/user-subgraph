@@ -15,6 +15,13 @@ type Node interface {
 	GetID() string
 }
 
+type PageInfo struct {
+	StartCursor     *string `json:"startCursor"`
+	EndCursor       *string `json:"endCursor"`
+	HasPreviousPage bool    `json:"hasPreviousPage"`
+	HasNextPage     bool    `json:"hasNextPage"`
+}
+
 // User type
 type User struct {
 	// User's first name
@@ -35,6 +42,21 @@ func (User) IsNode() {}
 func (this User) GetID() string { return this.ID }
 
 func (User) IsEntity() {}
+
+type UsersConnection struct {
+	PageInfo *PageInfo    `json:"pageInfo"`
+	Edges    []*UsersEdge `json:"edges"`
+}
+
+type UsersEdge struct {
+	Cursor string `json:"cursor"`
+	Node   *User  `json:"node"`
+}
+
+type UsersInput struct {
+	First *int    `json:"first"`
+	After *string `json:"after"`
+}
 
 type Role string
 
