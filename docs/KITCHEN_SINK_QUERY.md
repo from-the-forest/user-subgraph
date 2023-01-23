@@ -15,3 +15,5 @@ query KitchenSink {
   }
 }
 ```
+
+NOTE: you can only use @defer with the supergraph - not the subgrpah
