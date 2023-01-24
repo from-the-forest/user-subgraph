@@ -61,6 +61,8 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 	case "User":
 		return lib.FindUserByID(globalId.ID)
 	}
+	// TODO: how would this type `Node` be resolved from a single service without being aware of other types
+	// i.e from relay-subgraph which has no awareness of user-subgraph - you wouldn't have a method to call?
 	return nil, fmt.Errorf("not implemented for type %s", globalId.Type)
 }
 
