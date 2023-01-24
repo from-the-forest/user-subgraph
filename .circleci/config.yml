@@ -133,6 +133,7 @@ workflows:
             - secrets
             - schema
       - docker/publish:
+          context: ftf
           registry: registry.digitalocean.com/from-the-forest
           docker-username: DO_TOKEN
           docker-password: DO_TOKEN
