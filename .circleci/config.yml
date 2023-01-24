@@ -139,7 +139,7 @@ workflows:
           docker-password: DO_TOKEN
           image: user-subgraph
           tag: $CIRCLE_SHA1
-          extra_build_args: "--build-arg MONGO_CONNECTION_STRING=$MONGO_CONNECTION_STRING --build-arg SUBGRAPH_SECRET=$SUBGRAPH_SECRET"
+          extra_build_args: "--build-arg MONGO_CONNECTION_STRING=$MONGO_CONNECTION_STRING"
       # - build-and-push:
       #     context: ftf
       #     requires:
