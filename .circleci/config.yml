@@ -66,26 +66,6 @@ jobs:
       - checkout
       - run: make lint
 
-  build-and-push:
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check:
-          registry: registry.digitalocean.com/from-the-forest
-          docker-username: DO_TOKEN
-          docker-password: DO_TOKEN
-      - docker/build:
-          registry: registry.digitalocean.com/from-the-forest
-          image: user-subgraph
-          tag: $CIRCLE_SHA1
-          # this is really finiky
-          extra_build_args: "--build-arg MONGO_CONNECTION_STRING=$MONGO_CONNECTION_STRING --build-arg SUBGRAPH_SECRET=$SUBGRAPH_SECRET"
-      - docker/push:
-          registry: registry.digitalocean.com/from-the-forest
-          image: user-subgraph
-          tag: $CIRCLE_SHA1
-
   deploy:
     docker:
       - image: "cimg/base:stable"
@@ -139,47 +119,46 @@ workflows:
           docker-password: DO_TOKEN
           image: user-subgraph
           tag: $CIRCLE_SHA1
+          # NOTE: multiple build args don't seem to work :(
           extra_build_args: "--build-arg MONGO_CONNECTION_STRING=$MONGO_CONNECTION_STRING"
-      # - build-and-push:
-      #     context: ftf
-      #     requires:
-      #       - install
-      #       - secrets
-      #       - test
-      # - terraform/fmt:
-      #     context: ftf
-      #     checkout: true
-      #     path: ./infra
-      # - terraform/validate:
-      #     context: ftf
-      #     checkout: true
-      #     path: ./infra
-      #     requires:
-      #       - terraform/fmt
-      # - terraform/plan:
-      #     context: ftf
-      #     checkout: true
-      #     path: ./infra
-      #     var: do_token=${DO_TOKEN},env=${CIRCLE_BRANCH}
-      #     persist-workspace: true
-      #     requires:
-      #       - terraform/validate
-      # - terraform/apply:
-      #     context: ftf
-      #     attach-workspace: true
-      #     path: ./infra
-      #     var: do_token=${DO_TOKEN}
-      #     requires:
-      #       - build-and-push
-      #       - terraform/plan
-      #     filters:
-      #       branches:
-      #         only: main
-      # - deploy:
-      #     context: ftf
-      #     requires:
-      #       - terraform/apply
-      # - publish:
-      #     context: ftf
-      #     requires:
-      #       - deploy
+          requires:
+            - install
+            - secrets
+            - test
+      - terraform/fmt:
+          context: ftf
+          checkout: true
+          path: ./infra
+      - terraform/validate:
+          context: ftf
+          checkout: true
+          path: ./infra
+          requires:
+            - terraform/fmt
+      - terraform/plan:
+          context: ftf
+          checkout: true
+          path: ./infra
+          var: do_token=${DO_TOKEN},env=${CIRCLE_BRANCH}
+          persist-workspace: true
+          requires:
+            - terraform/validate
+      - terraform/apply:
+          context: ftf
+          attach-workspace: true
+          path: ./infra
+          var: do_token=${DO_TOKEN}
+          requires:
+            - docker/publish
+            - terraform/plan
+          filters:
+            branches:
+              only: main
+      - deploy:
+          context: ftf
+          requires:
+            - terraform/apply
+      - publish:
+          context: ftf
+          requires:
+            - deploy
