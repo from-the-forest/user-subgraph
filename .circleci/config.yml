@@ -79,10 +79,11 @@ jobs:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph
           tag: $CIRCLE_SHA1
-      - docker/build:
-          registry: registry.digitalocean.com/from-the-forest
-          image: user-subgraph
-          tag: latest
+          extra_build_args: "--build-arg MONGO_CONNECTION_STRING=$MONGO_CONNECTION_STRING"
+      # - docker/build:
+      #     registry: registry.digitalocean.com/from-the-forest
+      #     image: user-subgraph
+      #     tag: latest
       - docker/push:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph

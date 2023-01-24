@@ -7,11 +7,15 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	c "user/graph/context"
 	graph "user/graph/generated"
 	"user/graph/lib"
 	"user/graph/model"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // DeleteUser is the resolver for the deleteUser field.
@@ -33,7 +37,28 @@ func (r *queryResolver) Host(ctx context.Context) (string, error) {
 // Users is the resolver for the users field.
 func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*model.UsersConnection, error) {
 	// get nodes from (mocked) database
-	users := lib.GetMockUsers()
+	// users := lib.GetMockUsers()
+	// TODO: use getters and setters to handle type safety so because context isn't type safe
+	// https: //www.calhoun.io/pitfalls-of-context-values-and-how-to-avoid-or-mitigate-them/
+	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+
+	// map of users keyed by id
+	users := make([]model.User, 0)
+	// get users
+	cursor, err := userCollection.Find(context.Background(), bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	for cursor.Next(context.Background()) {
+
+		u := model.User{}
+		err := cursor.Decode(&u)
+		if err != nil {
+			log.Fatal(err)
+		}
+		users = append(users, u)
+	}
+
 	// node to edge
 	edges := lib.Map(users, func(user model.User) *model.UsersEdge {
 		return &model.UsersEdge{

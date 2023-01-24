@@ -4,9 +4,14 @@ FROM golang:1.19-alpine
 
 WORKDIR /usr/src/app
 
+ARG MONGO_CONNECTION_STRING
+
 ENV PORT 4000
 ENV ENV production
 ENV SUBGRAPH_SECRET some-secret-value
+ENV MONGO_CONNECTION_STRING ${MONGO_CONNECTION_STRING}
+ENV MONGO_DATABASE test
+ENV MONGO_USER_COLLECTION user 
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY go.mod go.sum ./
