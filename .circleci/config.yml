@@ -87,7 +87,8 @@ jobs:
       - docker/push:
           registry: registry.digitalocean.com/from-the-forest
           image: user-subgraph
-          tag: $CIRCLE_SHA1,latest
+          tag: $CIRCLE_SHA1
+          # tag: $CIRCLE_SHA1,latest
 
   deploy:
     docker:
