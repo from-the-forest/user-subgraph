@@ -103,15 +103,26 @@ workflows:
   version: 2
   primary:
     jobs:
-      - install
-      - secrets
+      - install:
+          filters:
+            tags:
+              only: /^v.*/
+      - secrets:
+          filters:
+            tags:
+              only: /^v.*/
       - schema:
           context: ftf
+          filters:
+            tags:
+              only: /^v.*/
       - test:
           requires:
             - install
             - secrets
-            - schema
+          filters:
+            tags:
+              only: /^v.*/
       - docker/publish:
           context: ftf
           registry: registry.digitalocean.com/from-the-forest
@@ -125,6 +136,7 @@ workflows:
             - install
             - secrets
             - test
+            - schema
           filters:
             branches:
               ignore: /.*/
