@@ -103,15 +103,21 @@ workflows:
   version: 2
   primary:
     jobs:
-      - install
-      - secrets
+      - install:
+          filters: *
+      - secrets:
+          filters: *
       - schema:
           context: ftf
+          filters: *
       - test:
           requires:
             - install
             - secrets
             - schema
+          filters:
+            tags:
+              only: /^v.*/
       - docker/publish:
           context: ftf
           registry: registry.digitalocean.com/from-the-forest
