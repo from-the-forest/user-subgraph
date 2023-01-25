@@ -10,6 +10,11 @@
 
 - The schema is the source of truth.
 - It's up to the developer / team to decide if logic should live in resolvers or in downstream services.  That is a decision best made based on scaling and compute requirements.
+- The files on a given type do NOT always have to map 1:1 to a database's table.  In fact often it's better that they don't!
+
+## GQLGen/GoLang Notes
+- you need to infer types from context
+- even though multiple graphql files are supported - if you need to split up your schema - it might be too complicated.  Consider a new subgraph?
 
 ## K8s help
 
