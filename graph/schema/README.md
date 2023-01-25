@@ -1,1 +1,2 @@
 Apollo's schema checks seem to only support 1 file - so we can't split these out into multiple gql files
+maybe these is a way to keep schema seperated - but merged for the purposes of schema checks / publishing?

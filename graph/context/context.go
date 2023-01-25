@@ -62,7 +62,6 @@ func ContextMiddleware() gin.HandlerFunc {
 		// ////////////////////////////////////////////////////////////////////////
 		// set context values, and add them to the request
 		// ////////////////////////////////////////////////////////////////////////
-
 		ctx := context.WithValue(c.Request.Context(), UserCtxKey, user)
 		ctx = context.WithValue(ctx, EnvCtxkey, env)
 		ctx = context.WithValue(ctx, UserCollectionCtxKey, userCollection)
