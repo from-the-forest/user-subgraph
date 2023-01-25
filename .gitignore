@@ -1,5 +1,5 @@
 .env
 bin
 node_modules
-.idea
-!.idea/runConfigurations/*g
+/.idea/*
+!/.idea/runConfigurations
