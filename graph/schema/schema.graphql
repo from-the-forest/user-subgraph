@@ -1,17 +1,68 @@
+# #############################################################################
+# Schema extensions
+# #############################################################################
+
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.0"
     import: ["@key", "@shareable"]
   )
 
+# #############################################################################
+# Custom Directives
+# #############################################################################
+
+directive @hasRole(role: Role!) on FIELD_DEFINITION
+
+enum Role {
+  ADMIN
+  UUSER
+}
+
+# #############################################################################
+# Relay
+# #############################################################################
+
 interface Node {
   "Relay node id"
   id: ID!
 }
 
-# TODO: type PageInfo
+type PageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+# #############################################################################
+# Scalar(s)
+# #############################################################################
 
 scalar Email
+
+# #############################################################################
+# Query.users
+# #############################################################################
+
+input UsersInput {
+  first: Int = 10
+  after: String
+}
+
+type UsersConnection {
+  pageInfo: PageInfo!
+  edges: [UsersEdge!]!
+}
+
+type UsersEdge {
+  cursor: String!
+  node: User!
+}
+
+# #############################################################################
+# Entities
+# #############################################################################
 
 """
 User type
@@ -23,16 +74,28 @@ type User implements Node @key(fields: "id") {
   id: ID!
   "User's last name"
   lastName: String!
+  "User's full name (example of a compound field)"
+  fullName: String!
   "User's email address"
   email: Email!
 }
 
-"""
-Root query
-"""
+# #############################################################################
+# Root Queries
+# #############################################################################
+
 type Query {
   "The currently logged in user"
   whoami: User!
   "Hostname of the machine resolving this query"
-  host: String!
+  host: String! @deprecated(reason: "this is going to be removed")
+  "list of users"
+  users(input: UsersInput): UsersConnection!
+  "relay node query"
+  node(id: ID!): Node
+}
+
+type Mutation {
+  "deletes the given user"
+  deleteUser(id: ID!): ID! @hasRole(role: ADMIN)
 }

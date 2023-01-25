@@ -2,11 +2,13 @@ package lib
 
 import (
 	"user/graph/model"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func FindUserByID(id string) (*model.User, error) {
+func FindUserByID(userCollection *mongo.Collection, id string) (*model.User, error) {
 	user := &model.User{
-		ID:        "1",
+		ID:        ToGlobalID("User", "1"),
 		FirstName: "Willy",
 		LastName:  "Cuffney",
 		Email:     "littlewilly@gmail.com",

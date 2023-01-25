@@ -1,4 +1,4 @@
-package graph
+package resolver
 
 // This file will be automatically regenerated based on the schema, any resolver implementations
 // will be copied through when generating and any unknown code will be moved to the end.
@@ -6,18 +6,14 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	graph "user/graph/generated"
-	"user/graph/lib"
 	"user/graph/model"
 )
 
 // FindUserByID is the resolver for the findUserByID field.
 func (r *entityResolver) FindUserByID(ctx context.Context, id string) (*model.User, error) {
-	userCollection, err := lib.GetUserCollection()
-	if err != nil {
-		panic(err)
-	}
-	return lib.FindUserByID(userCollection, id)
+	panic(fmt.Errorf("not implemented: FindUserByID - findUserByID"))
 }
 
 // Entity returns graph.EntityResolver implementation.

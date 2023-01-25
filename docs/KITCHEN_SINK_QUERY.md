@@ -1,17 +1,41 @@
 ```gql
 fragment UserFields on User {
-  id
-  firstName
-  lastName
-  email
+      id
+    firstName
+    lastName
+    fullName
+    email
 }
 
 query KitchenSink {
   whoami {
-    ...UserFields
+		...UserFields
   }
-  _service {
-    sdl
+  users {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        ...UserFields
+      }
+    }
   }
+  node(id: "VXNlcjox") {
+    id
+    ... on User {
+      ...UserFields
+    }
+  }
+  host
 }
+
+# mutation DeleteUser {
+#   deleteUser(id: "VXNlcjox")
+# }
 ```
+
+NOTE: you can only use @defer with the supergraph - not the subgrpah
