@@ -126,6 +126,8 @@ workflows:
             - secrets
             - test
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
       - terraform/fmt:
@@ -133,6 +135,8 @@ workflows:
           checkout: true
           path: ./infra
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
       - terraform/validate:
@@ -142,6 +146,8 @@ workflows:
           requires:
             - terraform/fmt
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
       - terraform/plan:
@@ -153,6 +159,8 @@ workflows:
           requires:
             - terraform/validate
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
       - terraform/apply:
@@ -164,6 +172,8 @@ workflows:
             - docker/publish
             - terraform/plan
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
       - deploy:
@@ -171,6 +181,8 @@ workflows:
           requires:
             - terraform/apply
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
       - publish:
@@ -178,5 +190,7 @@ workflows:
           requires:
             - deploy
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
