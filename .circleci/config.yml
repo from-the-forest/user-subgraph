@@ -125,16 +125,25 @@ workflows:
             - install
             - secrets
             - test
+          filters:
+            tags:
+              only: /^v.*/
       - terraform/fmt:
           context: ftf
           checkout: true
           path: ./infra
+          filters:
+            tags:
+              only: /^v.*/
       - terraform/validate:
           context: ftf
           checkout: true
           path: ./infra
           requires:
             - terraform/fmt
+          filters:
+            tags:
+              only: /^v.*/
       - terraform/plan:
           context: ftf
           checkout: true
@@ -143,6 +152,9 @@ workflows:
           persist-workspace: true
           requires:
             - terraform/validate
+          filters:
+            tags:
+              only: /^v.*/
       - terraform/apply:
           context: ftf
           attach-workspace: true
@@ -152,13 +164,19 @@ workflows:
             - docker/publish
             - terraform/plan
           filters:
-            branches:
-              only: main
+            tags:
+              only: /^v.*/
       - deploy:
           context: ftf
           requires:
             - terraform/apply
+          filters:
+            tags:
+              only: /^v.*/
       - publish:
           context: ftf
           requires:
             - deploy
+          filters:
+            tags:
+              only: /^v.*/

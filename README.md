@@ -29,3 +29,20 @@
 | `make start`                | starts the subgraph's production server |
 | `make dev`                  | starts the subgraph's dev server |
 | `make generate`             | runs gqlgen code generation |
+
+# Deployments
+
+CI is setup to do tag based deployments.
+
+#### Create a tag
+
+`git tag -a v0.1.0 -m "initial deployment"`
+
+#### View tags
+
+`git tag`
+
+#### Push tag
+
+`git push origin v0.1.0`
+
