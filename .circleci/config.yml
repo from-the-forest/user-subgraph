@@ -92,7 +92,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      # NOTE: it seems like rover dosen't support wildcards and thus we can't have multiple gql files
+      # NOTE: it seems like rover doesn't support wildcards, and thus we can't have multiple gql files
       - run: |
           APOLLO_KEY=$APOLLO_KEY npx @apollo/rover subgraph publish \
             cuffney-supergraph-vokiem@main \
