@@ -1,5 +1,7 @@
 # User Subgraph
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/from-the-forest/user-subgraph/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/from-the-forest/user-subgraph/tree/main)
+
 ## Requirements
 
 - `go`
