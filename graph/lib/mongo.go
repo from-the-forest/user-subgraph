@@ -2,11 +2,20 @@ package lib
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+type UserRecord struct {
+	ObjectID  primitive.ObjectID `bson: "_id" json: "_id"`
+	ID        string             `bson: "id" json: "id"`
+	FirstName string             `bson: "firstName" json: "firstName"`
+	LastName  string             `bson: "lastName" json: "lastName"`
+	Email     string             `bson: "email" json: "email"`
+}
 
 func GetUserCollection() (*mongo.Collection, error) {
 	// connect to database

@@ -78,14 +78,14 @@ func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*mo
 
 // Node is the resolver for the node field.
 func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
-	userCollection := ctx.Value(&c.UserCollectionCtxKey).(*mongo.Collection)
+	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
 	globalId, err := lib.FromGlobalId(id)
 	if err != nil {
 		return nil, fmt.Errorf("invalid global id %s", id)
 	}
 	switch globalId.Type {
 	case "User":
-		return lib.FindUserByID(userCollection, globalId.ID)
+		return lib.FindUserByID(userCollection, id)
 	}
 	// TODO: how would this type `Node` be resolved from a single service without being aware of other types
 	// i.e from relay-subgraph which has no awareness of user-subgraph - you wouldn't have a method to call?
