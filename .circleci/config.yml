@@ -36,12 +36,19 @@ jobs:
 
   schema-check:
     executor: node/default
+    parameters:
+      subgraph-name:
+        type: string
+      supergraph-name:
+        type: string
+      supergraph-variant:
+        type: string
     steps:
       - checkout
       - run: |
           APOLLO_KEY=$APOLLO_KEY npx @apollo/rover subgraph check \
-            cuffney-supergraph-vokiem@main \
-            --name user-subgraph \
+            << parameters.supergraph-name >>@<< parameters.supergraph-variant >> \
+            --name << parameters.subgraph-name >> \
             --schema ./graph/schema/schema.graphql
 
   test:
@@ -69,13 +76,16 @@ jobs:
   deploy:
     docker:
       - image: "cimg/base:stable"
+    parameters:
+      cluster-name:
+        type: string
     steps:
       - checkout
       - kubernetes/install
       - doctl/install
       - doctl/initialize:
           digitalocean-access-token: DO_TOKEN
-      - run: doctl kubernetes cluster kubeconfig save ftf-main-cluster
+      - run: doctl kubernetes cluster kubeconfig save << parameters.cluster-name >>
       - kubernetes/create-or-update-resource:
           resource-file-path: ./.k8s/namespace.yml
       - kubernetes/update-container-image:
@@ -88,15 +98,22 @@ jobs:
       - kubernetes/create-or-update-resource:
           resource-file-path: ./.k8s/ingress.yml
 
-  publish-schema:
+  schema-publish:
     executor: node/default
+    parameters:
+      subgraph-name:
+        type: string
+      supergraph-name:
+        type: string
+      supergraph-variant:
+        type: string
     steps:
       - checkout
       # NOTE: it seems like rover doesn't support wildcards, and thus we can't have multiple gql files
       - run: |
           APOLLO_KEY=$APOLLO_KEY npx @apollo/rover subgraph publish \
-            cuffney-supergraph-vokiem@main \
-            --name user-subgraph \
+            << parameters.supergraph-name >>@<< parameters.supergraph-variant >> \
+            --name << parameters.subgraph-name >> \
             --schema ./graph/schema/schema.graphql
 
 workflows:
@@ -113,6 +130,9 @@ workflows:
               only: /^v.*/
       - schema-check:
           context: ftf
+          subgraph-name: user-subgraph
+          supergraph-name: cuffney-supergraph-vokiem
+          supergraph-variant: main
           filters:
             tags:
               only: /^v.*/
@@ -192,15 +212,19 @@ workflows:
           context: ftf
           requires:
             - terraform/apply
+          cluster-name: ftf-main-cluster
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
-      - publish-schema:
+      - schema-publish:
           context: ftf
           requires:
             - deploy
+          subgraph-name: user-subgraph
+          supergraph-name: cuffney-supergraph-vokiem
+          supergraph-variant: main
           filters:
             branches:
               ignore: /.*/
