@@ -61,6 +61,26 @@ type UsersEdge {
 }
 
 # #############################################################################
+# Mutation.updateUser
+# #############################################################################
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  email: Email
+}
+
+# #############################################################################
+# Mutation.createUser
+# #############################################################################
+
+input CreateUserInput {
+  firstName: String
+  lastName: String
+  email: Email
+}
+
+# #############################################################################
 # Entities
 # #############################################################################
 
@@ -87,8 +107,6 @@ type User implements Node @key(fields: "id") {
 type Query {
   "The currently logged in user"
   whoami: User!
-  "Hostname of the machine resolving this query"
-  host: String! @deprecated(reason: "this is going to be removed")
   "list of users"
   users(input: UsersInput): UsersConnection!
   "relay node query"
@@ -97,5 +115,9 @@ type Query {
 
 type Mutation {
   "deletes the given user"
-  deleteUser(id: ID!): ID! @hasRole(role: ADMIN)
+  createUser(input: CreateUserInput!): User!
+  "deletes the given user"
+  updateUser(input: UpdateUserInput!): User!
+  "deletes the given user"
+  deleteUser(id: ID!): User!
 }

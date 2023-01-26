@@ -15,11 +15,23 @@ type Node interface {
 	GetID() string
 }
 
+type CreateUserInput struct {
+	FirstName *string       `json:"firstName"`
+	LastName  *string       `json:"lastName"`
+	Email     *scalar.Email `json:"email"`
+}
+
 type PageInfo struct {
 	StartCursor     *string `json:"startCursor"`
 	EndCursor       *string `json:"endCursor"`
 	HasPreviousPage bool    `json:"hasPreviousPage"`
 	HasNextPage     bool    `json:"hasNextPage"`
+}
+
+type UpdateUserInput struct {
+	FirstName *string       `json:"firstName"`
+	LastName  *string       `json:"lastName"`
+	Email     *scalar.Email `json:"email"`
 }
 
 // User type

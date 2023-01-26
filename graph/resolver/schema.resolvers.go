@@ -18,20 +18,30 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// CreateUser is the resolver for the createUser field.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
+	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
+	return lib.FindUserByID(userCollection, userId)
+}
+
+// UpdateUser is the resolver for the updateUser field.
+func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUserInput) (*model.User, error) {
+	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
+	return lib.FindUserByID(userCollection, userId)
+}
+
 // DeleteUser is the resolver for the deleteUser field.
-func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (string, error) {
-	return id, nil
+func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.User, error) {
+	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	return lib.FindUserByID(userCollection, id)
 }
 
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 	user := ctx.Value(c.UserCtxKey).(*model.User)
 	return user, nil
-}
-
-// Host is the resolver for the host field.
-func (r *queryResolver) Host(ctx context.Context) (string, error) {
-	return os.Hostname()
 }
 
 // Users is the resolver for the users field.
@@ -109,3 +119,13 @@ func (r *Resolver) User() graph1.UserResolver { return &userResolver{r} }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type userResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *queryResolver) Host(ctx context.Context) (string, error) {
+	return os.Hostname()
+}
