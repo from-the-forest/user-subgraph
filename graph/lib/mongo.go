@@ -4,6 +4,8 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"os"
+	"user-subgraph/graph/model"
+	"user-subgraph/graph/scalar"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -29,4 +31,13 @@ func GetUserCollection() (*mongo.Collection, error) {
 	userCollection := client.Database(mongoDatabaseName).Collection(mongoUserCollectionName)
 
 	return userCollection, nil
+}
+
+func UserRecordToUserModel(userRecord UserRecord) model.User {
+	return model.User{
+		ID:        userRecord.ID,
+		FirstName: userRecord.FirstName,
+		LastName:  userRecord.LastName,
+		Email:     scalar.Email(userRecord.Email),
+	}
 }

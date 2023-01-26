@@ -11,7 +11,7 @@ query KitchenSink {
   whoami {
 		...UserFields
   }
-  users {
+  users(input: { first: 5 }) {
     pageInfo {
       hasNextPage
       hasPreviousPage

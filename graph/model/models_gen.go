@@ -65,26 +65,21 @@ type UsersEdge struct {
 	Node   *User  `json:"node"`
 }
 
-type UsersInput struct {
-	First *int    `json:"first"`
-	After *string `json:"after"`
-}
-
 type Role string
 
 const (
 	RoleAdmin Role = "ADMIN"
-	RoleUuser Role = "UUSER"
+	RoleUser  Role = "USER"
 )
 
 var AllRole = []Role{
 	RoleAdmin,
-	RoleUuser,
+	RoleUser,
 }
 
 func (e Role) IsValid() bool {
 	switch e {
-	case RoleAdmin, RoleUuser:
+	case RoleAdmin, RoleUser:
 		return true
 	}
 	return false

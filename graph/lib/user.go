@@ -3,10 +3,8 @@ package lib
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	"user-subgraph/graph/model"
-	"user-subgraph/graph/scalar"
-
 	"go.mongodb.org/mongo-driver/mongo"
+	"user-subgraph/graph/model"
 )
 
 func FindUserByID(userCollection *mongo.Collection, id string) (*model.User, error) {
@@ -26,12 +24,7 @@ func FindUserByID(userCollection *mongo.Collection, id string) (*model.User, err
 		panic(err)
 	}
 
-	user := &model.User{
-		ID:        record.ID,
-		FirstName: record.FirstName,
-		LastName:  record.LastName,
-		Email:     scalar.Email(record.Email),
-	}
+	user := UserRecordToUserModel(record)
 
-	return user, nil
+	return &user, nil
 }

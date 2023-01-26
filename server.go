@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -32,14 +31,13 @@ func graphqlHandler() gin.HandlerFunc {
 	// NOTE: this is only here because `Directives` is a struct not an interface :(
 	// I'd much rather this be in `graph/directives` and included in the config similar to &graph.Resolver{},
 	// https://github.com/99designs/gqlgen/issues/632
-	config.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error) {
-		// if !getCurrentUser(ctx).HasRole(role) {
+	config.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, roles []model.Role) (interface{}, error) {
+		// if !getCurrentUser(ctx).HasRole(roles) {
 		// 	// block calling the next resolver
 		// 	return nil, fmt.Errorf("access denied")
 		// }
-		return nil, fmt.Errorf("access denied")
 		// or let it pass through
-		// return next(ctx)
+		return next(ctx)
 	}
 
 	h := handler.NewDefaultServer(generated.NewExecutableSchema(config))

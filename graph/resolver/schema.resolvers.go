@@ -7,74 +7,81 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-	"os"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
 	"user-subgraph/graph/lib"
 	"user-subgraph/graph/model"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
-	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	userCollection := c.GetUserCollection(ctx)
 	userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
 	return lib.FindUserByID(userCollection, userId)
 }
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUserInput) (*model.User, error) {
-	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	userCollection := c.GetUserCollection(ctx)
 	userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
 	return lib.FindUserByID(userCollection, userId)
 }
 
 // DeleteUser is the resolver for the deleteUser field.
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.User, error) {
-	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	userCollection := c.GetUserCollection(ctx)
 	return lib.FindUserByID(userCollection, id)
 }
 
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
-	user := ctx.Value(c.UserCtxKey).(*model.User)
+	user := c.GetUser(ctx)
 	return user, nil
 }
 
 // Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*model.UsersConnection, error) {
-	// get nodes from (mocked) database
-	// users := lib.GetMockUsers()
-	// TODO: use getters and setters to handle type safety so because context isn't type safe
-	// https: //www.calhoun.io/pitfalls-of-context-values-and-how-to-avoid-or-mitigate-them/
-	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+func (r *queryResolver) Users(ctx context.Context, first *int, after *string) (*model.UsersConnection, error) {
+	userCollection := c.GetUserCollection(ctx)
 
-	// map of users keyed by id
+	// slice of users keyed by id
 	users := make([]model.User, 0)
-	// get users
-	cursor, err := userCollection.Find(context.Background(), bson.D{})
+
+	// increment "first" by 1 so that we can determine if there is a next page
+	limit := int64(*first) + int64(1)
+	skip := int64(0) // TODO: use after
+	options := &options.FindOptions{
+		Limit: &limit,
+		Skip:  &skip,
+	}
+	// we use `bson.D{}` as opposed to `bson.M{}` because order matters for pagination
+	filter := bson.D{}
+	cursor, err := userCollection.Find(context.Background(), filter, options)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 	for cursor.Next(context.Background()) {
-
-		u := model.User{}
-		err := cursor.Decode(&u)
+		userRecord := lib.UserRecord{}
+		err := cursor.Decode(&userRecord)
 		if err != nil {
 			log.Fatal(err)
 		}
-		users = append(users, u)
+		user := lib.UserRecordToUserModel(userRecord)
+		users = append(users, user)
 	}
 
 	// node to edge
 	edges := lib.Map(users, func(user model.User) *model.UsersEdge {
 		return &model.UsersEdge{
-			Node: &user,
+			Cursor: user.ID,
+			Node:   &user,
 		}
 	})
+
 	return &model.UsersConnection{
 		PageInfo: &model.PageInfo{
 			StartCursor:     nil,
@@ -88,7 +95,7 @@ func (r *queryResolver) Users(ctx context.Context, input *model.UsersInput) (*mo
 
 // Node is the resolver for the node field.
 func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error) {
-	userCollection := ctx.Value(c.UserCollectionCtxKey).(*mongo.Collection)
+	userCollection := c.GetUserCollection(ctx)
 	globalId, err := lib.FromGlobalId(id)
 	if err != nil {
 		return nil, fmt.Errorf("invalid global id %s", id)
@@ -119,13 +126,3 @@ func (r *Resolver) User() graph1.UserResolver { return &userResolver{r} }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type userResolver struct{ *Resolver }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//     it when you're done.
-//   - You have helper methods in this file. Move them out to keep these resolver files clean.
-func (r *queryResolver) Host(ctx context.Context) (string, error) {
-	return os.Hostname()
-}

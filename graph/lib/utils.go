@@ -7,3 +7,10 @@ func Map[T, V any](ts []T, fn func(T) V) []V {
 	}
 	return result
 }
+
+func Head[T any](ts []T) *T {
+	if len(ts) == 0 {
+		return nil
+	}
+	return &ts[0]
+}

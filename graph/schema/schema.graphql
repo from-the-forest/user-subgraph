@@ -12,11 +12,11 @@ extend schema
 # Custom Directives
 # #############################################################################
 
-directive @hasRole(role: Role!) on FIELD_DEFINITION
+directive @hasRole(roles: [Role!]!) on FIELD_DEFINITION
 
 enum Role {
   ADMIN
-  UUSER
+  USER
 }
 
 # #############################################################################
@@ -44,11 +44,6 @@ scalar Email
 # #############################################################################
 # Query.users
 # #############################################################################
-
-input UsersInput {
-  first: Int = 10
-  after: String
-}
 
 type UsersConnection {
   pageInfo: PageInfo!
@@ -108,7 +103,7 @@ type Query {
   "The currently logged in user"
   whoami: User!
   "list of users"
-  users(input: UsersInput): UsersConnection!
+  users(first: Int = 10, after: String): UsersConnection! @hasRole(roles: [ADMIN])
   "relay node query"
   node(id: ID!): Node
 }
