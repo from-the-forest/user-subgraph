@@ -3,8 +3,8 @@ package lib
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	"user/graph/model"
-	"user/graph/scalar"
+	"user-subgraph/graph/model"
+	"user-subgraph/graph/scalar"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )

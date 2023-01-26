@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	c "user/graph/context"
-	graph "user/graph/generated"
-	"user/graph/lib"
-	"user/graph/model"
+	c "user-subgraph/graph/context"
+	graph1 "user-subgraph/graph/generated"
+	"user-subgraph/graph/lib"
+	"user-subgraph/graph/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -97,14 +97,14 @@ func (r *userResolver) FullName(ctx context.Context, obj *model.User) (string, e
 	return obj.FirstName + " " + obj.LastName, nil
 }
 
-// Mutation returns graph.MutationResolver implementation.
-func (r *Resolver) Mutation() graph.MutationResolver { return &mutationResolver{r} }
+// Mutation returns graph1.MutationResolver implementation.
+func (r *Resolver) Mutation() graph1.MutationResolver { return &mutationResolver{r} }
 
-// Query returns graph.QueryResolver implementation.
-func (r *Resolver) Query() graph.QueryResolver { return &queryResolver{r} }
+// Query returns graph1.QueryResolver implementation.
+func (r *Resolver) Query() graph1.QueryResolver { return &queryResolver{r} }
 
-// User returns graph.UserResolver implementation.
-func (r *Resolver) User() graph.UserResolver { return &userResolver{r} }
+// User returns graph1.UserResolver implementation.
+func (r *Resolver) User() graph1.UserResolver { return &userResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
-	"user/graph/lib"
+	"user-subgraph/graph/lib"
 
 	"github.com/gin-gonic/gin"
 )

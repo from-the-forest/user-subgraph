@@ -6,10 +6,9 @@ package resolver
 
 import (
 	"context"
-	graph "user/graph/generated"
-
-	"user/graph/lib"
-	"user/graph/model"
+	graph "user-subgraph/graph/generated"
+	"user-subgraph/graph/lib"
+	"user-subgraph/graph/model"
 )
 
 // FindUserByID is the resolver for the findUserByID field.

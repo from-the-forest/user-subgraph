@@ -6,7 +6,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 
-	"user/graph/lib"
+	"user-subgraph/graph/lib"
 
 	"github.com/google/uuid"
 	"syreclabs.com/go/faker"

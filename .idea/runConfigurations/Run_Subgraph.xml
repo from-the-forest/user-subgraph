@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Subgraph" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="user-subgraph" />
     <working_directory value="$PROJECT_DIR$" />
     <kind value="FILE" />
     <package value="user" />

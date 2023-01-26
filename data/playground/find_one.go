@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
-	"user/graph/lib"
+	"user-subgraph/graph/lib"
 )
 
 type UserRecord struct {

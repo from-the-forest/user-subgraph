@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
-	"user/graph/model"
-	"user/graph/scalar"
+	"user-subgraph/graph/model"
+	"user-subgraph/graph/scalar"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -525,7 +525,7 @@ func (ec *executionContext) dir_hasRole_args(ctx context.Context, rawArgs map[st
 	var arg0 model.Role
 	if tmp, ok := rawArgs["role"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
-		arg0, err = ec.unmarshalNRole2userᚋgraphᚋmodelᚐRole(ctx, tmp)
+		arg0, err = ec.unmarshalNRole2userᚑsubgraphᚋgraphᚋmodelᚐRole(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -615,7 +615,7 @@ func (ec *executionContext) field_Query_users_args(ctx context.Context, rawArgs 
 	var arg0 *model.UsersInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalOUsersInput2ᚖuserᚋgraphᚋmodelᚐUsersInput(ctx, tmp)
+		arg0, err = ec.unmarshalOUsersInput2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -690,7 +690,7 @@ func (ec *executionContext) _Entity_findUserByID(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖuserᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Entity_findUserByID(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -747,7 +747,7 @@ func (ec *executionContext) _Mutation_deleteUser(ctx context.Context, field grap
 			return ec.resolvers.Mutation().DeleteUser(rctx, fc.Args["id"].(string))
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
-			role, err := ec.unmarshalNRole2userᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
+			role, err := ec.unmarshalNRole2userᚑsubgraphᚋgraphᚋmodelᚐRole(ctx, "ADMIN")
 			if err != nil {
 				return nil, err
 			}
@@ -1006,7 +1006,7 @@ func (ec *executionContext) _Query_whoami(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖuserᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_whoami(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1106,7 +1106,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(*model.UsersConnection)
 	fc.Result = res
-	return ec.marshalNUsersConnection2ᚖuserᚋgraphᚋmodelᚐUsersConnection(ctx, field.Selections, res)
+	return ec.marshalNUsersConnection2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersConnection(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1164,7 +1164,7 @@ func (ec *executionContext) _Query_node(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(model.Node)
 	fc.Result = res
-	return ec.marshalONode2userᚋgraphᚋmodelᚐNode(ctx, field.Selections, res)
+	return ec.marshalONode2userᚑsubgraphᚋgraphᚋmodelᚐNode(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_node(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1627,7 +1627,7 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 	}
 	res := resTmp.(scalar.Email)
 	fc.Result = res
-	return ec.marshalNEmail2userᚋgraphᚋscalarᚐEmail(ctx, field.Selections, res)
+	return ec.marshalNEmail2userᚑsubgraphᚋgraphᚋscalarᚐEmail(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_email(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1671,7 +1671,7 @@ func (ec *executionContext) _UsersConnection_pageInfo(ctx context.Context, field
 	}
 	res := resTmp.(*model.PageInfo)
 	fc.Result = res
-	return ec.marshalNPageInfo2ᚖuserᚋgraphᚋmodelᚐPageInfo(ctx, field.Selections, res)
+	return ec.marshalNPageInfo2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐPageInfo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UsersConnection_pageInfo(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1725,7 +1725,7 @@ func (ec *executionContext) _UsersConnection_edges(ctx context.Context, field gr
 	}
 	res := resTmp.([]*model.UsersEdge)
 	fc.Result = res
-	return ec.marshalNUsersEdge2ᚕᚖuserᚋgraphᚋmodelᚐUsersEdgeᚄ(ctx, field.Selections, res)
+	return ec.marshalNUsersEdge2ᚕᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersEdgeᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UsersConnection_edges(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1819,7 +1819,7 @@ func (ec *executionContext) _UsersEdge_node(ctx context.Context, field graphql.C
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖuserᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UsersEdge_node(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -4550,13 +4550,13 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNEmail2userᚋgraphᚋscalarᚐEmail(ctx context.Context, v interface{}) (scalar.Email, error) {
+func (ec *executionContext) unmarshalNEmail2userᚑsubgraphᚋgraphᚋscalarᚐEmail(ctx context.Context, v interface{}) (scalar.Email, error) {
 	var res scalar.Email
 	err := res.UnmarshalGQLContext(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNEmail2userᚋgraphᚋscalarᚐEmail(ctx context.Context, sel ast.SelectionSet, v scalar.Email) graphql.Marshaler {
+func (ec *executionContext) marshalNEmail2userᚑsubgraphᚋgraphᚋscalarᚐEmail(ctx context.Context, sel ast.SelectionSet, v scalar.Email) graphql.Marshaler {
 	return graphql.WrapContextMarshaler(ctx, v)
 }
 
@@ -4575,7 +4575,7 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) marshalNPageInfo2ᚖuserᚋgraphᚋmodelᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v *model.PageInfo) graphql.Marshaler {
+func (ec *executionContext) marshalNPageInfo2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐPageInfo(ctx context.Context, sel ast.SelectionSet, v *model.PageInfo) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4585,13 +4585,13 @@ func (ec *executionContext) marshalNPageInfo2ᚖuserᚋgraphᚋmodelᚐPageInfo(
 	return ec._PageInfo(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNRole2userᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) (model.Role, error) {
+func (ec *executionContext) unmarshalNRole2userᚑsubgraphᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) (model.Role, error) {
 	var res model.Role
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNRole2userᚋgraphᚋmodelᚐRole(ctx context.Context, sel ast.SelectionSet, v model.Role) graphql.Marshaler {
+func (ec *executionContext) marshalNRole2userᚑsubgraphᚋgraphᚋmodelᚐRole(ctx context.Context, sel ast.SelectionSet, v model.Role) graphql.Marshaler {
 	return v
 }
 
@@ -4610,11 +4610,11 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNUser2userᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2userᚑsubgraphᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚖuserᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4624,11 +4624,11 @@ func (ec *executionContext) marshalNUser2ᚖuserᚋgraphᚋmodelᚐUser(ctx cont
 	return ec._User(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNUsersConnection2userᚋgraphᚋmodelᚐUsersConnection(ctx context.Context, sel ast.SelectionSet, v model.UsersConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNUsersConnection2userᚑsubgraphᚋgraphᚋmodelᚐUsersConnection(ctx context.Context, sel ast.SelectionSet, v model.UsersConnection) graphql.Marshaler {
 	return ec._UsersConnection(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUsersConnection2ᚖuserᚋgraphᚋmodelᚐUsersConnection(ctx context.Context, sel ast.SelectionSet, v *model.UsersConnection) graphql.Marshaler {
+func (ec *executionContext) marshalNUsersConnection2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersConnection(ctx context.Context, sel ast.SelectionSet, v *model.UsersConnection) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4638,7 +4638,7 @@ func (ec *executionContext) marshalNUsersConnection2ᚖuserᚋgraphᚋmodelᚐUs
 	return ec._UsersConnection(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNUsersEdge2ᚕᚖuserᚋgraphᚋmodelᚐUsersEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.UsersEdge) graphql.Marshaler {
+func (ec *executionContext) marshalNUsersEdge2ᚕᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersEdgeᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.UsersEdge) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4662,7 +4662,7 @@ func (ec *executionContext) marshalNUsersEdge2ᚕᚖuserᚋgraphᚋmodelᚐUsers
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUsersEdge2ᚖuserᚋgraphᚋmodelᚐUsersEdge(ctx, sel, v[i])
+			ret[i] = ec.marshalNUsersEdge2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersEdge(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4682,7 +4682,7 @@ func (ec *executionContext) marshalNUsersEdge2ᚕᚖuserᚋgraphᚋmodelᚐUsers
 	return ret
 }
 
-func (ec *executionContext) marshalNUsersEdge2ᚖuserᚋgraphᚋmodelᚐUsersEdge(ctx context.Context, sel ast.SelectionSet, v *model.UsersEdge) graphql.Marshaler {
+func (ec *executionContext) marshalNUsersEdge2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersEdge(ctx context.Context, sel ast.SelectionSet, v *model.UsersEdge) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -5097,7 +5097,7 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	return res
 }
 
-func (ec *executionContext) marshalONode2userᚋgraphᚋmodelᚐNode(ctx context.Context, sel ast.SelectionSet, v model.Node) graphql.Marshaler {
+func (ec *executionContext) marshalONode2userᚑsubgraphᚋgraphᚋmodelᚐNode(ctx context.Context, sel ast.SelectionSet, v model.Node) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -5168,7 +5168,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) unmarshalOUsersInput2ᚖuserᚋgraphᚋmodelᚐUsersInput(ctx context.Context, v interface{}) (*model.UsersInput, error) {
+func (ec *executionContext) unmarshalOUsersInput2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersInput(ctx context.Context, v interface{}) (*model.UsersInput, error) {
 	if v == nil {
 		return nil, nil
 	}

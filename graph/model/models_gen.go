@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
-	"user/graph/scalar"
+	"user-subgraph/graph/scalar"
 )
 
 type Node interface {

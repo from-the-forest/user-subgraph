@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
-	"user/graph/lib"
+	"user-subgraph/graph/lib"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
