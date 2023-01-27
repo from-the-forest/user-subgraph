@@ -24,3 +24,7 @@ https://www.youtube.com/watch?v=MpovOI5eK58
 ## MongoDB
 
 - best practice to have 1 "cluster" with multiple "databases" and "collections" per subgraph. however that would be super expensive - so maybe 1 cluster for now.
+
+## Handling Schema Check Failures
+
+When a schema check fails - it warrants a closer look at the changes.  However, the way to get around it is to publish the schema changes async via the CLI.
