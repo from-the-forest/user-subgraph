@@ -17,11 +17,11 @@ func isValidEmail(email string) bool {
 	return err == nil
 }
 
-// for incoming email values (i.e from a client on an input type)
-func (e *Email) UnmarshalGQLContext(ctx context.Context, v interface{}) error {
+// UnmarshalGQLContext for incoming email values (i.e. from a client on an input type)
+func (e *Email) UnmarshalGQLContext(_ context.Context, v interface{}) error {
 	str, ok := v.(string)
 	if !ok {
-		return fmt.Errorf("Email must be a string")
+		return fmt.Errorf("email must be a string")
 	}
 
 	if !isValidEmail(str) {
@@ -33,7 +33,7 @@ func (e *Email) UnmarshalGQLContext(ctx context.Context, v interface{}) error {
 	return nil
 }
 
-// for outgoing email values (i.e returned on a type)
+// MarshalGQLContext for outgoing email values (i.e. returned on a type)
 func (e Email) MarshalGQLContext(ctx context.Context, w io.Writer) error {
 	str := string(e)
 
@@ -43,7 +43,10 @@ func (e Email) MarshalGQLContext(ctx context.Context, w io.Writer) error {
 		graphql.AddErrorf(ctx, "%s is not a valid email", str)
 	}
 
-	w.Write([]byte(strconv.Quote(string(e))))
+	_, err := w.Write([]byte(strconv.Quote(string(e))))
+	if err != nil {
+		return fmt.Errorf("email must be a string")
+	}
 
 	return nil
 }
