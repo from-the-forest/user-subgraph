@@ -47,7 +47,7 @@ func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 func (r *queryResolver) Users(ctx context.Context, first *int, after *string) (*model.UsersConnection, error) {
 	userCollection := c.GetUserCollection(ctx)
 
-	// slice of users keyed by id
+	// slice to hold users
 	users := make([]model.User, 0)
 
 	// increment "first" by 1 so that we can determine if there is a next page
@@ -57,22 +57,31 @@ func (r *queryResolver) Users(ctx context.Context, first *int, after *string) (*
 		Limit: &limit,
 		Skip:  &skip,
 	}
-	// we use `bson.D{}` as opposed to `bson.M{}` because order matters for pagination
+	// use `bson.D{}` as opposed to `bson.M{}` because order matters for pagination
 	filter := bson.D{}
 	cursor, err := userCollection.Find(context.Background(), filter, options)
-
 	if err != nil {
 		log.Fatal(err)
 	}
-	for cursor.Next(context.Background()) {
-		userRecord := lib.UserRecord{}
-		err := cursor.Decode(&userRecord)
-		if err != nil {
-			log.Fatal(err)
-		}
+
+	var userRecords []lib.UserRecord
+	err = cursor.All(context.Background(), &userRecords)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, userRecord := range userRecords {
 		user := lib.UserRecordToUserModel(userRecord)
 		users = append(users, user)
 	}
+
+	// get the pageInfo while we have `first + 1` elements, so we can get the endCursor (which is exclusive)
+	startCursor := users[0].ID
+	endCursor := users[len(users)-1].ID
+	hasNextPage := len(users) > *first
+	hasPreviousPage := after != nil
+	// remove the extra element we fetched before building the edges
+	users = users[:len(users)-1]
 
 	// node to edge
 	edges := lib.Map(users, func(user model.User) *model.UsersEdge {
@@ -84,10 +93,10 @@ func (r *queryResolver) Users(ctx context.Context, first *int, after *string) (*
 
 	return &model.UsersConnection{
 		PageInfo: &model.PageInfo{
-			StartCursor:     nil,
-			EndCursor:       nil,
-			HasPreviousPage: false,
-			HasNextPage:     false,
+			StartCursor:     &startCursor,
+			EndCursor:       &endCursor,
+			HasPreviousPage: hasPreviousPage,
+			HasNextPage:     hasNextPage,
 		},
 		Edges: edges,
 	}, nil
