@@ -16,6 +16,7 @@ type ContextKey struct {
 var UserCtxKey = &ContextKey{"user"}
 var EnvCtxkey = &ContextKey{"env"}
 var UserCollectionCtxKey = &ContextKey{"userCollection"}
+var GraphQLCtxKey = &ContextKey{"graphql"}
 
 func ContextMiddleware() gin.HandlerFunc {
 	/**
@@ -38,6 +39,13 @@ func ContextMiddleware() gin.HandlerFunc {
 	// ////////////////////////////////////////////////////////////////////////
 
 	env := os.Getenv("ENV")
+
+	// ////////////////////////////////////////////////////////////////////////
+	// GraphQL.  (make supergraph calls from within a subgraph)
+	// ////////////////////////////////////////////////////////////////////////
+
+	// TODO: create a function to execute graphql queries that will be available to resolvers
+	graphql := 0
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -65,6 +73,7 @@ func ContextMiddleware() gin.HandlerFunc {
 		ctx := context.WithValue(c.Request.Context(), UserCtxKey, user)
 		ctx = context.WithValue(ctx, EnvCtxkey, env)
 		ctx = context.WithValue(ctx, UserCollectionCtxKey, userCollection)
+		ctx = context.WithValue(ctx, GraphQLCtxKey, graphql)
 
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()

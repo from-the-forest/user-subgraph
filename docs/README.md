@@ -28,3 +28,12 @@ https://www.youtube.com/watch?v=MpovOI5eK58
 ## Handling Schema Check Failures
 
 When a schema check fails - it warrants a closer look at the changes.  However, the way to get around it is to publish the schema changes async via the CLI.
+
+## Schema Design
+
+- use relay spec
+- favor `Query.search<Entity>` over `Query.<entities>` for list operations. 
+  - why? it's simply more semantic-ly correct name and provides a consistent flexible API across entities
+- validation should happen at the schema level as much as possible
+  - use scalars
+  - use directives
