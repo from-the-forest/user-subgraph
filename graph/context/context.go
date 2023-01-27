@@ -64,7 +64,7 @@ func GqlCtxMiddleware() gin.HandlerFunc {
 		userId := "VXNlcjowODEyMzE3ZC1hYzE0LTRkODktOTMwZi03MDgyMmZjNzdjMGI="
 		user, err := lib.FindUserByID(userCollection, userId)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		// ////////////////////////////////////////////////////////////////////////

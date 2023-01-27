@@ -14,7 +14,6 @@ func GetUser(ctx context.Context) *model.User {
 	user, ok := ctx.Value(UserCtxKey).(*model.User)
 	if !ok {
 		log.Fatal(ok)
-		// TODO: Log this issue
 		return nil
 	}
 	return user
@@ -23,7 +22,7 @@ func GetUser(ctx context.Context) *model.User {
 func GetUserCollection(ctx context.Context) *mongo.Collection {
 	userCollection, ok := ctx.Value(UserCollectionCtxKey).(*mongo.Collection)
 	if !ok {
-		// Log this issue
+		log.Fatal(ok)
 		return nil
 	}
 	return userCollection

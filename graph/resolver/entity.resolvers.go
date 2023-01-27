@@ -15,7 +15,7 @@ import (
 func (r *entityResolver) FindUserByID(ctx context.Context, id string) (*model.User, error) {
 	userCollection, err := lib.GetUserCollection()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	return lib.FindUserByID(userCollection, id)
 }

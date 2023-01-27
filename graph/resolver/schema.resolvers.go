@@ -150,7 +150,16 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 
 // Nodes is the resolver for the nodes field.
 func (r *queryResolver) Nodes(ctx context.Context, ids []string) ([]model.Node, error) {
-	panic(fmt.Errorf("not implemented: Nodes - nodes"))
+	for _, id := range ids {
+		// 1. group by type
+		_, err := lib.FromGlobalId(id)
+		if err != nil {
+			return nil, fmt.Errorf("invalid global id %s", id)
+		}
+	}
+	// 2. fetch nodes for a respective type
+	var nodes []model.Node = []model.Node{}
+	return nodes, fmt.Errorf("not implemented")
 }
 
 // FullName is the resolver for the fullName field.
