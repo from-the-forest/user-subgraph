@@ -106,7 +106,9 @@ type Query {
   "list of users"
   searchUsers(first: Int = 10, after: String): UsersConnection! @hasRole(roles: [ADMIN])
   "relay node query"
-  node(id: ID!): Node
+  node(id: ID!): Node!
+  "relay nodes query"
+  nodes(ids: [ID!]!): [Node!]!
 }
 
 type Mutation {

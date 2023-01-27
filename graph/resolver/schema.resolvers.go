@@ -7,7 +7,6 @@ package resolver
 import (
 	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
@@ -16,6 +15,7 @@ import (
 
 	"github.com/dgryski/trifles/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // CreateUser is the resolver for the createUser field.
@@ -146,6 +146,11 @@ func (r *queryResolver) Node(ctx context.Context, id string) (model.Node, error)
 	// TODO: how would this type `Node` be resolved from a single service without being aware of other types
 	// i.e from relay-subgraph which has no awareness of user-subgraph - you wouldn't have a method to call?
 	return nil, fmt.Errorf("not implemented for type %s", globalId.Type)
+}
+
+// Nodes is the resolver for the nodes field.
+func (r *queryResolver) Nodes(ctx context.Context, ids []string) ([]model.Node, error) {
+	panic(fmt.Errorf("not implemented: Nodes - nodes"))
 }
 
 // FullName is the resolver for the fullName field.

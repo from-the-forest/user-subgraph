@@ -117,7 +117,7 @@ func main() {
 	r := gin.Default()
 
 	// add middleware
-	r.Use(c.ContextMiddleware())
+	r.Use(c.GqlCtxMiddleware())
 	if env == Production {
 		r.Use(CorsMiddleware())
 		r.Use(SubgraphSecretMiddleware())

@@ -37,3 +37,4 @@ When a schema check fails - it warrants a closer look at the changes.  However, 
 - validation should happen at the schema level as much as possible
   - use scalars
   - use directives
+- Schema is a source of truth. That includes nullability

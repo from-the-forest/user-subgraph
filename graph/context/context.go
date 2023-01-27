@@ -9,16 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ContextKey struct {
+type CtxKey struct {
 	name string
 }
 
-var UserCtxKey = &ContextKey{"user"}
-var EnvCtxkey = &ContextKey{"env"}
-var UserCollectionCtxKey = &ContextKey{"userCollection"}
-var GraphQLCtxKey = &ContextKey{"graphql"}
+var UserCtxKey = &CtxKey{"user"}
+var EnvCtxkey = &CtxKey{"env"}
+var UserCollectionCtxKey = &CtxKey{"userCollection"}
+var GraphQLCtxKey = &CtxKey{"graphql"}
 
-func ContextMiddleware() gin.HandlerFunc {
+func GqlCtxMiddleware() gin.HandlerFunc {
 	/**
 	 * All code before the return statement is run at server startup - not per
 	 * request.  As such anything that would be "expensive" to do every request
