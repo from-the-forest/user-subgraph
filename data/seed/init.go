@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 
 	"user-subgraph/graph/lib"
@@ -29,6 +32,19 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// delete all existing documents
+	res, err := userCollection.DeleteMany(context.Background(), bson.D{})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Deleted: %v records\n", res.DeletedCount)
+
+	byIdIndex := mongo.IndexModel{
+		Keys:    bson.M{"id": 1},
+		Options: options.Index().SetName("by-id"),
+	}
+	userCollection.Indexes().CreateOne(context.Background(), byIdIndex)
 
 	const numUsers = 20
 	users := make([]interface{}, 0)

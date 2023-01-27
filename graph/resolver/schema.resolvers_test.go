@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"testing"
-	c "user/graph/context"
-	"user/graph/model"
+	c "user-subgraph/graph/context"
+	"user-subgraph/graph/model"
 
 	"github.com/stretchr/testify/assert"
 )

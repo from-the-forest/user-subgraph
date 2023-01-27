@@ -53,10 +53,10 @@ func ContextMiddleware() gin.HandlerFunc {
 		authorizationHeader := c.GetHeader("Authorization")
 		log.Printf("Authorization Header: %s", authorizationHeader)
 		// TODO: parse jwt token to get user id and look up user record
-		userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
+		userId := "VXNlcjowODEyMzE3ZC1hYzE0LTRkODktOTMwZi03MDgyMmZjNzdjMGI="
 		user, err := lib.FindUserByID(userCollection, userId)
 		if err != nil {
-			log.Fatal("Failed to find user by id")
+			panic(err)
 		}
 
 		// ////////////////////////////////////////////////////////////////////////

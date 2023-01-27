@@ -25,5 +25,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(result)
+	fmt.Printf("Deleted: %v records\n", result.DeletedCount)
 }

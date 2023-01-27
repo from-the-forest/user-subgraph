@@ -52,13 +52,21 @@ func (r *queryResolver) Users(ctx context.Context, first *int, after *string) (*
 
 	// increment "first" by 1 so that we can determine if there is a next page
 	limit := int64(*first) + int64(1)
-	skip := int64(0) // TODO: use after
 	options := &options.FindOptions{
+		// NOTE: might make more sense for the id portion of the node id to be `_id` but, I am going to try to have it work on a secondary index
+		// specify index name
+		Hint:  "by-id",
 		Limit: &limit,
-		Skip:  &skip,
+		// TODO: do I need a sort key here?
+		//Sort: bson.D{{"id", 1}},
+		// do not include the _id field in the response
+		Projection: bson.M{"_id": 0},
 	}
 	// use `bson.D{}` as opposed to `bson.M{}` because order matters for pagination
 	filter := bson.D{}
+	if after != nil {
+		filter = bson.D{{Key: "id", Value: bson.D{{Key: "$gte", Value: *after}}}}
+	}
 	cursor, err := userCollection.Find(context.Background(), filter, options)
 	if err != nil {
 		log.Fatal(err)
