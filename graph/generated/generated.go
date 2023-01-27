@@ -457,6 +457,7 @@ type UsersEdge {
 # #############################################################################
 
 input UpdateUserInput {
+  id: String!
   firstName: String
   lastName: String
   email: Email
@@ -3890,13 +3891,21 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"firstName", "lastName", "email"}
+	fieldsInOrder := [...]string{"id", "firstName", "lastName", "email"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "firstName":
 			var err error
 

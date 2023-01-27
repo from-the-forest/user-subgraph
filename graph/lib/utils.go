@@ -1,5 +1,7 @@
 package lib
 
+import "reflect"
+
 func Map[T, V any](ts []T, fn func(T) V) []V {
 	result := make([]V, len(ts))
 	for i, t := range ts {
@@ -8,9 +10,12 @@ func Map[T, V any](ts []T, fn func(T) V) []V {
 	return result
 }
 
-func Head[T any](ts []T) *T {
-	if len(ts) == 0 {
-		return nil
+// Merge two scructs of the same type together
+func Merge(a, b interface{}) interface{} {
+	val := reflect.ValueOf(a).Elem()
+	val2 := reflect.ValueOf(b).Elem()
+	for i := 0; i < val.NumField(); i++ {
+		val.Field(i).Set(val2.Field(i))
 	}
-	return &ts[0]
+	return val
 }

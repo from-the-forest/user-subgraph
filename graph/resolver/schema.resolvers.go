@@ -7,34 +7,56 @@ package resolver
 import (
 	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
 	"user-subgraph/graph/lib"
 	"user-subgraph/graph/model"
 
+	"github.com/dgryski/trifles/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
+	newRecord := lib.UserRecord{
+		ID:        lib.ToGlobalID("User", uuid.UUIDv4()),
+		FirstName: *input.FirstName,
+		LastName:  *input.LastName,
+		Email:     string(*input.Email),
+	}
 	userCollection := c.GetUserCollection(ctx)
-	userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
-	return lib.FindUserByID(userCollection, userId)
+	_, err := userCollection.InsertOne(context.Background(), newRecord)
+	if err != nil {
+		log.Fatal(err)
+	}
+	user := lib.UserRecordToUserModel(newRecord)
+	return &user, err
 }
 
 // UpdateUser is the resolver for the updateUser field.
 func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUserInput) (*model.User, error) {
 	userCollection := c.GetUserCollection(ctx)
-	userId := "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc="
-	return lib.FindUserByID(userCollection, userId)
+	currentUser, err := lib.FindUserByID(userCollection, input.ID)
+	//updatesToUser := model.User{
+	//	FirstName: *input.FirstName,
+	//	LastName:  *input.LastName,
+	//	Email:     *input.Email,
+	//}
+	//user := lib.Merge(currentUser, updatesToUser).(model.User)
+	return currentUser, err
 }
 
 // DeleteUser is the resolver for the deleteUser field.
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.User, error) {
 	userCollection := c.GetUserCollection(ctx)
-	return lib.FindUserByID(userCollection, id)
+	user, err := lib.FindUserByID(userCollection, id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	userCollection.DeleteOne(context.Background(), bson.M{"id": id})
+	return user, nil
 }
 
 // Whoami is the resolver for the whoami field.
