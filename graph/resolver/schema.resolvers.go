@@ -7,7 +7,7 @@ package resolver
 import (
 	"context"
 	"fmt"
-	"log"
+	"github.com/99designs/gqlgen/graphql"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
 	"user-subgraph/graph/lib"
@@ -29,7 +29,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUse
 	userCollection := c.GetUserCollection(ctx)
 	_, err := userCollection.InsertOne(context.Background(), newRecord)
 	if err != nil {
-		log.Fatal(err)
+		graphql.AddError(ctx, err)
 	}
 	user := lib.UserRecordToUserModel(newRecord)
 	return &user, err
@@ -53,7 +53,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.Us
 	userCollection := c.GetUserCollection(ctx)
 	user, err := lib.FindUserByID(userCollection, id)
 	if err != nil {
-		log.Fatal(err)
+		graphql.AddError(ctx, err)
 	}
 	userCollection.DeleteOne(context.Background(), bson.M{"id": id})
 	return user, nil
@@ -91,13 +91,13 @@ func (r *queryResolver) SearchUsers(ctx context.Context, first *int, after *stri
 	}
 	cursor, err := userCollection.Find(context.Background(), filter, options)
 	if err != nil {
-		log.Fatal(err)
+		graphql.AddError(ctx, err)
 	}
 
 	var userRecords []lib.UserRecord
 	err = cursor.All(context.Background(), &userRecords)
 	if err != nil {
-		log.Fatal(err)
+		graphql.AddError(ctx, err)
 	}
 
 	for _, userRecord := range userRecords {
@@ -157,9 +157,10 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []string) ([]model.Node, 
 			return nil, fmt.Errorf("invalid global id %s", id)
 		}
 	}
+	graphql.AddError(ctx, fmt.Errorf("not implemented"))
 	// 2. fetch nodes for a respective type
 	var nodes []model.Node = []model.Node{}
-	return nodes, fmt.Errorf("not implemented")
+	return nodes, nil
 }
 
 // FullName is the resolver for the fullName field.

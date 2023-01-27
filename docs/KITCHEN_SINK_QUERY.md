@@ -30,6 +30,12 @@ query KitchenSink {
       ...UserFields
     }
   }
+  nodes(ids: ["VXNlcjowODEyMzE3ZC1hYzE0LTRkODktOTMwZi03MDgyMmZjNzdjMGI="]) {
+    id
+    ... on User {
+      ...UserFields
+    }
+  }
 }
 
 mutation CreateUser {
