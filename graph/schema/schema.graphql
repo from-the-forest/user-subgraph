@@ -104,7 +104,7 @@ type Query {
   "The currently logged in user"
   whoami: User!
   "list of users"
-  users(first: Int = 10, after: String): UsersConnection! @hasRole(roles: [ADMIN])
+  searchUsers(first: Int = 10, after: String): UsersConnection! @hasRole(roles: [ADMIN])
   "relay node query"
   node(id: ID!): Node
 }

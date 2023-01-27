@@ -7,6 +7,7 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
@@ -15,7 +16,6 @@ import (
 
 	"github.com/dgryski/trifles/uuid"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // CreateUser is the resolver for the createUser field.
@@ -65,8 +65,8 @@ func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
 	return user, nil
 }
 
-// Users is the resolver for the users field.
-func (r *queryResolver) Users(ctx context.Context, first *int, after *string) (*model.UsersConnection, error) {
+// SearchUsers is the resolver for the searchUsers field.
+func (r *queryResolver) SearchUsers(ctx context.Context, first *int, after *string) (*model.UsersConnection, error) {
 	userCollection := c.GetUserCollection(ctx)
 
 	// slice to hold users

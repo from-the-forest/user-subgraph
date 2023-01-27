@@ -68,7 +68,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Node               func(childComplexity int, id string) int
-		Users              func(childComplexity int, first *int, after *string) int
+		SearchUsers        func(childComplexity int, first *int, after *string) int
 		Whoami             func(childComplexity int) int
 		__resolve__service func(childComplexity int) int
 		__resolve_entities func(childComplexity int, representations []map[string]interface{}) int
@@ -107,7 +107,7 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	Whoami(ctx context.Context) (*model.User, error)
-	Users(ctx context.Context, first *int, after *string) (*model.UsersConnection, error)
+	SearchUsers(ctx context.Context, first *int, after *string) (*model.UsersConnection, error)
 	Node(ctx context.Context, id string) (model.Node, error)
 }
 type UserResolver interface {
@@ -217,17 +217,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Node(childComplexity, args["id"].(string)), true
 
-	case "Query.users":
-		if e.complexity.Query.Users == nil {
+	case "Query.searchUsers":
+		if e.complexity.Query.SearchUsers == nil {
 			break
 		}
 
-		args, err := ec.field_Query_users_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_searchUsers_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.Users(childComplexity, args["first"].(*int), args["after"].(*string)), true
+		return e.complexity.Query.SearchUsers(childComplexity, args["first"].(*int), args["after"].(*string)), true
 
 	case "Query.whoami":
 		if e.complexity.Query.Whoami == nil {
@@ -501,7 +501,7 @@ type Query {
   "The currently logged in user"
   whoami: User!
   "list of users"
-  users(first: Int = 10, after: String): UsersConnection! @hasRole(roles: [ADMIN])
+  searchUsers(first: Int = 10, after: String): UsersConnection! @hasRole(roles: [ADMIN])
   "relay node query"
   node(id: ID!): Node
 }
@@ -677,7 +677,7 @@ func (ec *executionContext) field_Query_node_args(ctx context.Context, rawArgs m
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_users_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Query_searchUsers_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 *int
@@ -1233,8 +1233,8 @@ func (ec *executionContext) fieldContext_Query_whoami(ctx context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_users(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_users(ctx, field)
+func (ec *executionContext) _Query_searchUsers(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_searchUsers(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1248,7 +1248,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		directive0 := func(rctx context.Context) (interface{}, error) {
 			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Query().Users(rctx, fc.Args["first"].(*int), fc.Args["after"].(*string))
+			return ec.resolvers.Query().SearchUsers(rctx, fc.Args["first"].(*int), fc.Args["after"].(*string))
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
 			roles, err := ec.unmarshalNRole2ᚕuserᚑsubgraphᚋgraphᚋmodelᚐRoleᚄ(ctx, []interface{}{"ADMIN"})
@@ -1288,7 +1288,7 @@ func (ec *executionContext) _Query_users(ctx context.Context, field graphql.Coll
 	return ec.marshalNUsersConnection2ᚖuserᚑsubgraphᚋgraphᚋmodelᚐUsersConnection(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_searchUsers(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -1311,7 +1311,7 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_users_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Query_searchUsers_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -4171,7 +4171,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Concurrently(i, func() graphql.Marshaler {
 				return rrm(innerCtx)
 			})
-		case "users":
+		case "searchUsers":
 			field := field
 
 			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
@@ -4180,7 +4180,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_users(ctx, field)
+				res = ec._Query_searchUsers(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

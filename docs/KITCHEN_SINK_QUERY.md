@@ -9,9 +9,9 @@ fragment UserFields on User {
 
 query KitchenSink {
   whoami {
-		...UserFields
+  ...UserFields
   }
-  users(input: { first: 5 }) {
+  searchUsers(first: 2, after: "VXNlcjo3MDllOGU1Yy02ODVjLTRiMDUtYjNhNy1hNTJkYmY3ZGMxZDM=") {
     pageInfo {
       hasNextPage
       hasPreviousPage
@@ -24,7 +24,7 @@ query KitchenSink {
       }
     }
   }
-  node(id: "VXNlcjpjMGQzODQxNC1hYjE5LTQwODAtYTZiMi1jNWFkNjEyMTYwZjQ=") {
+  node(id: "VXNlcjowODEyMzE3ZC1hYzE0LTRkODktOTMwZi03MDgyMmZjNzdjMGI=") {
     id
     ... on User {
       ...UserFields
@@ -39,13 +39,13 @@ mutation CreateUser {
 }
 
 mutation UpdateUser {
-  updateUser(input: { firstName:"Nox", lastName: "Cuffney", email: "noxman@dog.com" }) {
+  updateUser(input: { id: "VXNlcjo5YTIyNDZkNy04NGQ4LTQ5YzItOWQ3OS05MDU3ZjYxN2IyM2Y=", firstName:"Willow", lastName: "Cuffney", email: "noxman@dog.com" }) {
     ...UserFields
   }
 }
 
 mutation DeleteUser {
-  deleteUser(id: "VXNlcjpkODBhOTNiZS00MGEwLTRhNTctODQ2YS1lZTU5MDY1ZmY1Mzc=") {
+  deleteUser(id: "VXNlcjpkOWM0ODY1ZC00Yjg5LTRhMjEtYWVjNi1jZjAzM2I3M2E3N2M=") {
     ... UserFields
   }
 }
