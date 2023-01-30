@@ -117,6 +117,11 @@ jobs:
             --schema ./graph/schema/schema.graphql
 
   load-test:
+    parameters:
+      supergraph-name:
+        type: string
+      supergraph-variant:
+        type: string
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -125,7 +130,9 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install apache2-utils
-            ab -k -c 20 -n 25 -T application/json -p load_test_query.json https://main--cuffney-supergraph-vokiem.apollographos.net/graphql
+            ab -k -c 20 -n 25 -T application/json \
+              -p ./.circleci/load_test_query.json \
+              https://<< parameters.supergraph-variant >>--<< parameters.supergraph-name >>.apollographos.net/graphql
 
 workflows:
   version: 2
@@ -244,6 +251,13 @@ workflows:
       # -TODO:  integration
 
   nightly:
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
+#          filters:
+#            branches:
+#              only:
+#                - main
     jobs:
       - load-test
       # -TODO:  integration
