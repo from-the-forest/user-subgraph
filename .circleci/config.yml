@@ -116,6 +116,17 @@ jobs:
             --name << parameters.subgraph-name >> \
             --schema ./graph/schema/schema.graphql
 
+  load-test:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - run:
+          name: Run Load Test
+          command: |
+            sudo apt-get update
+            sudo apt-get install apache2-utils
+            ab -k -c 20 -n 25 -T application/json -p load_test_query.json https://main--cuffney-supergraph-vokiem.apollographos.net/graphql
+
 workflows:
   version: 2
   primary:
@@ -228,5 +239,12 @@ workflows:
           filters:
             branches:
               ignore: /.*/
+            tags:
+              only: /^v.*/
+
+  nightly:
+    jobs:
+      - install:
+          filters:
             tags:
               only: /^v.*/
