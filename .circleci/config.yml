@@ -273,13 +273,13 @@ workflows:
                only: /^v.*/
 
   nightly:
-#    triggers:
-#      - schedule:
-#          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
-#          filters:
-#            branches:
-#              only:
-#                - main
+    triggers:
+      - schedule:
+          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
+          filters:
+            branches:
+              only:
+                - main
     jobs:
       - load-test:
           supergraph-name: cuffney-supergraph-vokiem
