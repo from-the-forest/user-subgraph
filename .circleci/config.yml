@@ -259,5 +259,7 @@ workflows:
 #              only:
 #                - main
     jobs:
-      - load-test
+      - load-test:
+          supergraph-name: cuffney-supergraph-vokiem
+          supergraph-variant: maing
       # -TODO:  integration
