@@ -116,6 +116,17 @@ jobs:
             --name << parameters.subgraph-name >> \
             --schema ./graph/schema/schema.graphql
 
+  integration:
+    executor: node/default
+    parameters:
+      supergraph-name:
+        type: string
+      supergraph-variant:
+        type: string
+    steps:
+      - checkout
+      - run: echo "TODO"
+
   load-test:
     parameters:
       supergraph-name:
@@ -249,18 +260,31 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
-      # -TODO:  integration
+      - integration:
+           context: ftf
+           requires:
+             - schema-publish
+           supergraph-name: cuffney-supergraph-vokiem
+           supergraph-variant: main
+           filters:
+             branches:
+               ignore: /.*/
+             tags:
+               only: /^v.*/
 
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
-          filters:
-            branches:
-              only:
-                - main
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
+#          filters:
+#            branches:
+#              only:
+#                - main
     jobs:
       - load-test:
           supergraph-name: cuffney-supergraph-vokiem
           supergraph-variant: maing
-      # -TODO:  integration
+      - integration:
+          context: ftf
+          supergraph-name: cuffney-supergraph-vokiem
+          supergraph-variant: main
