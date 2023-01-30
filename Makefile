@@ -39,8 +39,8 @@ cover:
 	echo "not implemented"; exit 1;
 
 # run integration tests
-integration:
-	ENV=staging echo "not implemented"; exit 1;
+integration_tests:
+	go run ./integration/main.go
 
 # starts server without hot reloading
 start:
@@ -51,3 +51,4 @@ docker-build:
 
 docker-run:
 	docker run -p 4000:4000 ftf/user-subgraph:latest
+

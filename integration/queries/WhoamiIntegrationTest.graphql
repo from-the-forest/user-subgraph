@@ -1,0 +1,13 @@
+fragment UserFields on User {
+    id
+    firstName
+    lastName
+    fullName
+    email
+}
+
+query WhoamiIntegrationTest {
+   whoami {
+       ...UserFields
+   }
+}
