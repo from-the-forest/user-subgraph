@@ -126,6 +126,7 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - checkout
+      - run: ls -lag
       - run:
           name: Run Load Test
           command: |
