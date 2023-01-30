@@ -125,13 +125,14 @@ jobs:
     docker:
       - image: circleci/node:10.16.3
     steps:
+      - checkout
       - run:
           name: Run Load Test
           command: |
             sudo apt-get update
             sudo apt-get install apache2-utils
             ab -k -c 20 -n 25 -T application/json \
-              -p ./load_test_query.json \
+              -p ./.circleci/gload_test_query.json \
               https://<< parameters.supergraph-variant >>--<< parameters.supergraph-name >>.apollographos.net/graphql
 
 workflows:
