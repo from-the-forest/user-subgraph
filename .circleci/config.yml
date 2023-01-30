@@ -242,7 +242,7 @@ workflows:
             tags:
               only: /^v.*/
       # -TODO:  integration
-      g
+
   nightly:
     jobs:
       - load-test
