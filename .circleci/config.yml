@@ -123,6 +123,8 @@ jobs:
         type: string
       supergraph-variant:
         type: string
+    environment:
+      GRAPHQL_ENDPOINT: https://<< parameters.supergraph-variant >>--<< parameters.supergraph-name >>.apollographos.net/graphql
     executor:
       name: go/default
       tag: 1.19.4
@@ -293,7 +295,7 @@ workflows:
     jobs:
       - load-test:
           supergraph-name: cuffney-supergraph-vokiem
-          supergraph-variant: maing
+          supergraph-variant: main
       - integration:
           context: ftf
           supergraph-name: cuffney-supergraph-vokiem
