@@ -32,15 +32,19 @@ lint:
 # run unit tests
 test:
 	# TODO: arg for watch mode
-	go test ./...
+	go test ./graph/...
 
 # run unit tests and capture coverage
 cover:
 	echo "not implemented"; exit 1;
 
-# run integration tests
-integration_tests:
-	go run ./integration/main.go
+# run tests tests
+integration:
+	GRAPHQL_ENDPOINT="https://main--cuffney-supergraph-vokiem.apollographos.net/graphql" go test ./tests/integration/...
+
+# run tests tests
+e2e:
+	go test ./tests/e2e/...
 
 # starts server without hot reloading
 start:

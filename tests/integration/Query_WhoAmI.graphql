@@ -5,9 +5,8 @@ fragment UserFields on User {
     fullName
     email
 }
-
-query WhoamiIntegrationTest {
-   whoami {
-       ...UserFields
-   }
+query WhoAmI_IntegrationTest {
+    whoami {
+        ...UserFields
+    }
 }
