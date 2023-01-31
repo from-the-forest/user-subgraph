@@ -61,6 +61,7 @@ jobs:
       - go/mod-download
       - go/save-cache
       - go/test:
+          packages: ./graph/...
           covermode: atomic
           failfast: true
           race: true
@@ -117,15 +118,24 @@ jobs:
             --schema ./graph/schema/schema.graphql
 
   integration:
-    executor: node/default
     parameters:
       supergraph-name:
         type: string
       supergraph-variant:
         type: string
+    executor:
+      name: go/default
+      tag: 1.19.4
     steps:
       - checkout
-      - run: echo "TODO"
+      - go/load-cache
+      - go/mod-download
+      - go/save-cache
+      - go/test:
+          packages: ./tests/integration/...
+          covermode: atomic
+          failfast: true
+          race: true
 
   load-test:
     parameters:
@@ -273,13 +283,13 @@ workflows:
                only: /^v.*/
 
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
-          filters:
-            branches:
-              only:
-                - main
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * *" # 7 or 8 pm EST depending on daylight savings time
+#          filters:
+#            branches:
+#              only:
+#                - main
     jobs:
       - load-test:
           supergraph-name: cuffney-supergraph-vokiem
