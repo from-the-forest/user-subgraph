@@ -119,3 +119,8 @@ type Mutation {
   "deletes the given user"
   deleteUser(id: ID!): User!
 }
+
+type Subscription {
+  test: String!
+}
+

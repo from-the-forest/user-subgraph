@@ -7,12 +7,13 @@ package resolver
 import (
 	"context"
 	"fmt"
-	"github.com/99designs/gqlgen/graphql"
+	"time"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
 	"user-subgraph/graph/lib"
 	"user-subgraph/graph/model"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/dgryski/trifles/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -61,7 +62,6 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.Us
 
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
-
 	//// TODO: remove this - it's just an example of using the gql client within a resolver
 	//gqlClient := c.GetGraphQLClient(ctx)
 	//query := `{
@@ -178,6 +178,37 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []string) ([]model.Node, 
 	return nodes, nil
 }
 
+// Test is the resolver for the test field.
+func (r *subscriptionResolver) Test(ctx context.Context) (<-chan string, error) {
+	// `make()` your channel.
+	ch := make(chan string)
+
+	// You can (and probably should) handle your channels in a central place outside of `schema.resolvers.go`.
+	// For this example we'll simply use a Goroutine with a simple loop.
+	go func() {
+		for {
+			// In our example we'll send the current time every second.
+			time.Sleep(1 * time.Second)
+			fmt.Println("Tick")
+
+			// The channel may have gotten closed due to the client disconnecting.
+			// To not have our Goroutine block or panic, we do the send in a select block.
+			// This will jump to the default case if the channel is closed.
+			select {
+			case ch <- "some value": // This is the actual send.
+				// Our message went through, do nothing
+			default: // This is run when our send does not work.
+				fmt.Println("Channel closed.")
+				// You can handle any deregistration of the channel here.
+				return // We'll just return ending the routine.
+			}
+		}
+	}()
+
+	// We return the channel and no error.
+	return ch, nil
+}
+
 // FullName is the resolver for the fullName field.
 func (r *userResolver) FullName(ctx context.Context, obj *model.User) (string, error) {
 	return obj.FirstName + " " + obj.LastName, nil
@@ -189,9 +220,13 @@ func (r *Resolver) Mutation() graph1.MutationResolver { return &mutationResolver
 // Query returns graph1.QueryResolver implementation.
 func (r *Resolver) Query() graph1.QueryResolver { return &queryResolver{r} }
 
+// Subscription returns graph1.SubscriptionResolver implementation.
+func (r *Resolver) Subscription() graph1.SubscriptionResolver { return &subscriptionResolver{r} }
+
 // User returns graph1.UserResolver implementation.
 func (r *Resolver) User() graph1.UserResolver { return &userResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type subscriptionResolver struct{ *Resolver }
 type userResolver struct{ *Resolver }

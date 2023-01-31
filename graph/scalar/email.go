@@ -18,14 +18,15 @@ func isValidEmail(email string) bool {
 }
 
 // UnmarshalGQLContext for incoming email values (i.e. from a client on an input type)
-func (e *Email) UnmarshalGQLContext(_ context.Context, v interface{}) error {
+func (e *Email) UnmarshalGQLContext(ctx context.Context, v interface{}) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("email must be a string")
 	}
 
 	if !isValidEmail(str) {
-		return fmt.Errorf("%s is not a valid email", str)
+		//return fmt.Errorf("%s is not a valid email", str)
+		graphql.AddErrorf(ctx, "%s is not a valid email", str)
 	}
 
 	*e = Email(str)
