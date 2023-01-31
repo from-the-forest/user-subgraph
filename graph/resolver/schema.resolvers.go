@@ -7,6 +7,7 @@ package resolver
 import (
 	"context"
 	"fmt"
+	"syreclabs.com/go/faker"
 	"time"
 	c "user-subgraph/graph/context"
 	graph1 "user-subgraph/graph/generated"
@@ -195,7 +196,7 @@ func (r *subscriptionResolver) Test(ctx context.Context) (<-chan string, error) 
 			// To not have our Goroutine block or panic, we do the send in a select block.
 			// This will jump to the default case if the channel is closed.
 			select {
-			case ch <- "some value": // This is the actual send.
+			case ch <- faker.Bitcoin().Address(): // This is the actual send.
 				// Our message went through, do nothing
 			default: // This is run when our send does not work.
 				fmt.Println("Channel closed.")
