@@ -61,6 +61,21 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.Us
 
 // Whoami is the resolver for the whoami field.
 func (r *queryResolver) Whoami(ctx context.Context) (*model.User, error) {
+
+	//// TODO: remove this - it's just an example of using the gql client within a resolver
+	//gqlClient := c.GetGraphQLClient(ctx)
+	//query := `{
+	//	whoami { id }
+	//}`
+	//request := gql.NewRequest(query)
+	//var response interface{}
+	//err := gqlClient.Run(ctx, request, &response)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//body, _ := json.Marshal(response)
+	//fmt.Println(string(body))
+
 	user := c.GetUser(ctx)
 	return user, nil
 }

@@ -2,6 +2,7 @@ package context
 
 import (
 	"context"
+	"github.com/machinebox/graphql"
 	"log"
 	"os"
 	"user-subgraph/graph/lib"
@@ -44,8 +45,12 @@ func GqlCtxMiddleware() gin.HandlerFunc {
 	// GraphQL.  (make supergraph calls from within a subgraph)
 	// ////////////////////////////////////////////////////////////////////////
 
-	// TODO: create a function to execute graphql queries that will be available to resolvers
-	graphql := 0
+	// create a function to execute graphql queries available for resolvers
+	graphqlEndpoint := os.Getenv("GRAPHQL_ENDPOINT")
+	if graphqlEndpoint == "" {
+		log.Fatalln("you must specify a graphql endpoint")
+	}
+	graphql := graphql.NewClient(graphqlEndpoint)
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

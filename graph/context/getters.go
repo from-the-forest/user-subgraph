@@ -2,6 +2,7 @@ package context
 
 import (
 	"context"
+	"github.com/machinebox/graphql"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"user-subgraph/graph/model"
@@ -26,4 +27,13 @@ func GetUserCollection(ctx context.Context) *mongo.Collection {
 		return nil
 	}
 	return userCollection
+}
+
+func GetGraphQLClient(ctx context.Context) *graphql.Client {
+	gqlClient, ok := ctx.Value(GraphQLCtxKey).(*graphql.Client)
+	if !ok {
+		log.Fatal(ok)
+		return nil
+	}
+	return gqlClient
 }
