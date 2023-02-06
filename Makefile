@@ -51,7 +51,7 @@ start:
 	go run ./server.go
 
 docker-build:
-	docker build -t ftf/user-subgraph:latest .
+	docker build -t ftf/user-subgraph:latest --build-arg MONGO_CONNECTION_STRING="<redacted>" .
 
 docker-run:
 	docker run -p 4000:4000 ftf/user-subgraph:latest
