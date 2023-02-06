@@ -51,7 +51,7 @@ start:
 	go run ./server.go
 
 docker-build:
-	docker build -t ftf/user-subgraph:latest .
+	docker build -t ftf/user-subgraph:latest --build-arg MONGO_CONNECTION_STRING="mongodb+srv://doadmin:fl79j0845VD6Sv1Q@ftf-main-cluster-20fa74e3.mongo.ondigitalocean.com/admin?authSource=admin&replicaSet=ftf-main-cluster&tls=true" .
 
 docker-run:
 	docker run -p 4000:4000 ftf/user-subgraph:latest
